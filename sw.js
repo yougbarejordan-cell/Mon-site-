@@ -12,13 +12,7 @@ const SHELL = [
   "manifest.webmanifest",
   "icon-192.png",
   "icon-512.png",
-  "logo.png",
-  "pay/nita.png",
-  "pay/amana.png",
-  "pay/wave.png",
-  "pay/zcash.png",
-  "pay/airtel.png",
-  "pay/flooz.png"
+  "logo.png"
 ];
 
 // Délai max d'attente du réseau avant d'utiliser la copie en cache (ms)
