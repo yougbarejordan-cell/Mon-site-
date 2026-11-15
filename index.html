@@ -437,6 +437,26 @@ body.searching .fx{display:none}
 <div class="modal full" id="mList"><div class="lbox"><div class="lhead"><button type="button" class="lback" data-close aria-label="Retour">‹</button><h2 id="lTitle"></h2><span id="lCount"></span></div><div class="lgrid" id="lGrid"></div></div></div>
 <div class="modal" id="mDetail"><div class="box wide"><button class="x" data-close>×</button><div id="detail"></div></div></div>
 
+<button type="button" id="cartFab" hidden aria-label="Panier">🛒 Panier <b id="cartN">0</b></button>
+<div class="modal" id="mCart"><div class="box"><button class="x" data-close>×</button>
+  <h2>🛒 Mon panier</h2>
+  <div id="kList" style="display:grid;gap:8px;margin:10px 0"></div>
+  <p id="kTot" style="font-weight:700"></p>
+  <div id="kPay">
+    <label for="kM">Moyen de paiement</label><select id="kM"></select>
+    <div class="info" id="kInfo"></div>
+    <label for="kName">Votre nom</label><input id="kName" autocomplete="name">
+    <label for="kPhone">Votre numéro de téléphone</label><input id="kPhone" type="tel" autocomplete="tel" placeholder="+227 …">
+    <label for="kRef">Référence de la transaction</label><input id="kRef" placeholder="Ex. numéro du reçu">
+    <div class="btns"><button class="btn alt" id="kSend">Envoyer mon reçu sur WhatsApp</button></div>
+    <hr><p>Après vérification, nous vous envoyons <b>un seul code</b> qui débloque tout le panier.</p>
+    <label for="kCode">Code de déblocage</label><input id="kCode" inputmode="numeric" maxlength="6">
+    <div class="btns"><button class="btn" id="kUnlock">Débloquer le panier</button></div>
+    <p id="kMsg" style="margin-top:10px"></p>
+  </div>
+</div></div>
+<style>#cartFab{position:fixed;right:14px;bottom:86px;z-index:40;border:0;border-radius:99px;padding:11px 16px;font-weight:700;background:var(--teal);color:#06302a;box-shadow:0 6px 18px rgba(0,0,0,.45)}#cartFab[hidden]{display:none}</style>
+
 <!-- Paiement -->
 <div class="modal" id="mPay"><div class="box"><button class="x" data-close>×</button>
   <h2 id="payTitle">Paiement</h2>
@@ -520,6 +540,7 @@ body.searching .fx{display:none}
       <p style="color:var(--mut);font-size:.9rem">Vérifiez d’abord le reçu reçu sur WhatsApp. Choisissez ensuite le titre, saisissez le numéro du client avec l’indicatif (ex. 227…) et envoyez-lui le code.</p>
       <label for="cItem">Titre</label><select id="cItem"></select>
       <div id="cSeasBox" hidden><label for="cSeas">Saison</label><select id="cSeas"></select></div>
+      <label for="cCart">Référence panier (si le client paie un panier)</label><input id="cCart" placeholder="Collez la ligne « Réf. panier » du reçu">
       <label for="cPhone">Téléphone du client</label><input id="cPhone" type="tel" placeholder="227 …">
       <div class="btns"><button class="btn alt" id="cGen">Générer le code</button></div>
       <div id="cRes" hidden>
@@ -704,7 +725,7 @@ function showDetail(id, keep){
   $("#detail").innerHTML = `<div class="row"><div class="poster" data-trailer="${i.id}" style="${posterStyle(i)}">${i.poster?"":esc(i.title[0])}<button class="play" data-trailer="${i.id}" aria-label="Voir la bande-annonce">▶</button></div>
   <div><h2>${esc(i.title)}</h2><p style="color:var(--mut);margin:4px 0 10px">${LBL[i.type]} · ${isPaid(i,curS)?'<span class="ok">Débloqué</span>':fmt(i.price) + (ns>1 ? " par saison" : (i.type!=="film" && i.price>150 ? " pour 1 saison" : ""))}</p>
   <p>${esc(i.synopsis)||"Pas de synopsis."}</p>
-  <div class="btns" style="margin-top:12px"><button class="btn ghost" data-trailer="${i.id}">▶ Bande-annonce gratuite</button></div>
+  <div class="btns" style="margin-top:12px"><button class="btn ghost" data-trailer="${i.id}">▶ Bande-annonce gratuite</button>${isPaid(i,curS)?"":'<button class="btn alt" data-cart="1">🛒 Ajouter au panier</button>'}</div>
   ${seas}
   ${i.eps&&i.eps.length ? epList(i) : '<div class="btns"><button class="btn" data-act="watch">Regarder</button><button class="btn alt" data-act="dl">Télécharger</button></div>'}</div></div>`;
   open("#mDetail");
@@ -897,7 +918,13 @@ $("#fFile").onchange = e => {
 function updCSeas(){ const it = items.find(x => x.id===$("#cItem").value), n = it ? nSeas(it) : 1; $("#cSeasBox").hidden = n < 2; $("#cSeas").innerHTML = Array.from({length:n},(_,k) => `<option value="${k+1}">Saison ${k+1}</option>`).join(""); }
 $("#cItem").onchange = updCSeas;
 $("#cGen").onclick = () => {
-  const p = $("#cPhone").value.trim(), it = items.find(x => x.id===$("#cItem").value);
+  const p = $("#cPhone").value.trim(), it = items.find(x => x.id===$("#cItem").value), cr = $("#cCart").value.trim();
+  if(cr){
+    if(p.replace(/\D/g,"").length < 8) return toast("Saisissez le téléphone du client.");
+    const code = codeFor(cartId(cr), p); $("#cOut").textContent = code; $("#cRes").hidden = false;
+    $("#cWa").href = "https://wa.me/" + p.replace(/\D/g,"") + "?text=" + encodeURIComponent("Bonjour ! Votre paiement du panier est validé. Votre code de déblocage : " + code + ". Saisissez-le avec votre numéro dans votre panier sur Fabi Cine pour tout débloquer.");
+    return;
+  }
   if(!it) return toast("Choisissez un titre.");
   if(p.replace(/\D/g,"").length < 8) return toast("Saisissez le téléphone du client.");
   const sn = +$("#cSeas").value || 1, code = codeFor(pkey(it, sn), p); $("#cOut").textContent = code; $("#cRes").hidden = false;
@@ -1437,6 +1464,45 @@ document.addEventListener("click", e => {
     render(); try{ adminList(); }catch(e){}
   }).catch(() => {});
 })();
+
+/* ================= PANIER ================= */
+let cart = store.get("fc_cart", []);
+const cartId = s => "cart:" + s.replace(/^[^:,]*:\s*/,"").split(",").map(x => x.trim()).filter(Boolean).sort().join(",");
+const kItem = k => items.find(x => x.id === k.split("#")[0]);
+const kSeason = k => k.includes("#s") ? +k.split("#s")[1] : 1;
+const kLabel = k => { const i = kItem(k); return i ? i.title + (k.includes("#s") ? " – Saison " + kSeason(k) : "") : k; };
+const kRef = () => [...cart].sort().join(",");
+function cartUpd(){ cart = cart.filter(k => kItem(k) && !isPaid(kItem(k), kSeason(k))); store.set("fc_cart", cart); $("#cartFab").hidden = !cart.length; $("#cartN").textContent = cart.length; }
+function kInfo(){ $("#kInfo").textContent = CONFIG.PAIEMENTS[$("#kM").value] || ""; }
+function cartOpen(){
+  cartUpd(); const tot = cart.reduce((s,k) => s + kItem(k).price, 0);
+  $("#kList").innerHTML = cart.length ? cart.map(k => `<div class="li"><span>${esc(kLabel(k))}</span><b>${fmt(kItem(k).price)}</b><button class="btn sm ghost" data-krm="${esc(k)}">✕</button></div>`).join("") : '<p style="color:var(--mut)">Votre panier est vide.</p>';
+  $("#kTot").textContent = cart.length ? "Total : " + fmt(tot) : ""; $("#kPay").hidden = !cart.length;
+  $("#kM").innerHTML = Object.keys(CONFIG.PAIEMENTS).map(m => `<option>${esc(m)}</option>`).join(""); kInfo(); $("#kMsg").textContent = "";
+  close($("#mDetail")); open("#mCart");
+}
+$("#kM").onchange = kInfo;
+document.addEventListener("click", e => {
+  const t = e.target;
+  if(t.closest("[data-cart]") && cur){ const k = pkey(cur, curS); if(isPaid(cur, curS)) return; if(cart.includes(k)) toast("Déjà dans le panier."); else { cart.push(k); cartUpd(); toast("Ajouté au panier 🛒"); } return; }
+  if(t.closest("#cartFab")){ cartOpen(); return; }
+  const rm = t.closest("[data-krm]"); if(rm){ cart = cart.filter(k => k !== rm.dataset.krm); cartUpd(); cartOpen(); return; }
+  if(t.closest("#kSend")){
+    const n = $("#kName").value.trim(), p = $("#kPhone").value.trim();
+    if(!n || !p) return $("#kMsg").textContent = "Indiquez votre nom et votre numéro.";
+    const tot = cart.reduce((s,k) => s + kItem(k).price, 0);
+    const msg = `Bonjour Fabi Cine, voici ma confirmation de paiement (panier).\nTitres :\n${cart.map(k => "- " + kLabel(k)).join("\n")}\nMontant : ${fmt(tot)}\nMoyen : ${$("#kM").value}\nRéférence : ${$("#kRef").value.trim() || "—"}\nNom : ${n}\nTéléphone : ${p}\nRéf. panier : ${kRef()}`;
+    window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
+    $("#kMsg").innerHTML = '<span class="ok">Reçu envoyé. Entrez le code reçu pour débloquer.</span>'; return;
+  }
+  if(t.closest("#kUnlock")){
+    const p = $("#kPhone").value, c = $("#kCode").value.trim();
+    if(!p) return $("#kMsg").textContent = "Indiquez le numéro utilisé pour le paiement.";
+    if(c !== codeFor(cartId(kRef()), p)) return $("#kMsg").textContent = "Code incorrect. Vérifiez le code et le numéro.";
+    cart.forEach(k => paid[k] = true); store.set("fc_paid", paid); cart = []; cartUpd(); close($("#mCart")); render(); toast("Paiement validé ! Vos titres sont débloqués.");
+  }
+});
+cartUpd();
 </script>
 <div class="bnav" id="bnav">
   <button type="button" data-bn="home" class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</button>
