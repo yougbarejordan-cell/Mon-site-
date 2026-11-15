@@ -2,7 +2,7 @@
 //  Fabi Cine — Service Worker
 //  ➜ À CHAQUE DÉPLOIEMENT : change seulement CACHE_VERSION
 // ============================================================
-const CACHE_VERSION = "2026-11-15-1";
+const CACHE_VERSION = "2026-11-15-2";
 const CACHE_NAME = "fabi-cine-" + CACHE_VERSION;
 
 // Fichiers pré-chargés à l'installation (le site marche hors ligne dès la 1re visite)
