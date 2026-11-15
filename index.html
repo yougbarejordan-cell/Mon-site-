@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<script>try{var t=JSON.parse(localStorage.getItem("fc_theme")||'"dark"')}catch(e){var t="dark"}if(t==="auto"){t=(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches)?"light":"dark"}document.documentElement.dataset.theme=t==="light"?"light":"dark";try{document.documentElement.lang=JSON.parse(localStorage.getItem("fc_lang")||'"fr"')==="en"?"en":"fr"}catch(e){}</script>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fabi Cine : films, séries, mangas et dessins animés, paiement simple par mobile money.">
+<meta name="theme-color" content="#140f2b">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Fabi Cine">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Fabi Cine – Films, séries et mangas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet"></noscript>
+<style>
+:root{--bg:#140f2b;--bg2:#1e1740;--card:#251d4d;--line:#3a2f70;--txt:#f4f1ff;--mut:#a9a1d1;--pink:#ff4f7b;--sun:#ffc23d;--teal:#2ee6c5;--r:14px;--hd:rgba(20,15,43,.92)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--txt);font:400 16px/1.5 Figtree,system-ui,sans-serif}
+h1,h2,h3,.logo{font-family:"Bricolage Grotesque",Figtree,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+header{position:sticky;top:0;z-index:10;background:var(--hd);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 5%;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.logo{font-size:1.6rem;font-weight:800;letter-spacing:-.5px}
+.logo{display:flex;align-items:center;gap:10px}.logo img{border-radius:10px;display:block}.logo b{color:var(--pink)}
+.logo i{font-style:normal;color:var(--sun)}
+nav{display:flex;gap:6px;margin-left:auto}
+nav button{background:none;border:0;padding:8px 16px;border-radius:99px;color:var(--mut);font-weight:600}
+nav button.on{background:var(--pink);color:#fff}
+.search{flex:1 1 200px;max-width:320px;background:var(--bg2);border:1px solid var(--line);border-radius:99px;padding:8px 16px}
+.adm{background:none;border:1px solid var(--line);border-radius:99px;padding:8px 14px;color:var(--mut)}
+.hero{padding:40px 5% 18px}
+.hero h1{font-size:clamp(2rem,6vw,3.6rem);line-height:1.05;font-weight:800;max-width:14ch}
+.hero p{color:var(--mut);margin-top:10px;max-width:46ch}
+.price{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.price span{background:var(--bg2);border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-weight:600}
+.price em{font-style:normal;color:var(--sun)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px;padding:18px 5% 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;text-align:left;padding:0;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-4px);border-color:var(--pink)}
+.poster{aspect-ratio:2/3;background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:10px;font:800 2.4rem "Bricolage Grotesque",sans-serif;position:relative}
+.tag{position:absolute;top:8px;right:8px;background:var(--sun);color:#2a1d00;font:700 .8rem Figtree,sans-serif;padding:2px 10px;border-radius:99px}
+.card h3{font-size:1rem;padding:10px 12px 12px}
+.empty{grid-column:1/-1;color:var(--mut);padding:40px 0}
+.modal{position:fixed;inset:0;background:rgba(8,5,22,.8);display:none;align-items:center;justify-content:center;padding:16px;z-index:50;overflow:auto}
+.modal.open{display:flex}
+.box{background:var(--bg2);border:1px solid var(--line);border-radius:18px;width:100%;max-width:560px;padding:22px;position:relative;max-height:92vh;overflow:auto}
+.box.wide{max-width:860px}
+.x{position:absolute;top:10px;right:12px;background:none;border:0;font-size:1.6rem;color:var(--mut)}
+.row{display:flex;gap:18px}
+.row .poster{width:130px;flex:none;border-radius:10px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{border:0;border-radius:99px;padding:11px 22px;font-weight:700;background:var(--pink);color:#fff}
+.btn.alt{background:var(--teal);color:#06302a}
+.btn.ghost{background:none;border:1px solid var(--line);color:var(--txt)}
+.btn.sm{padding:5px 12px;font-size:.85rem}
+label{display:block;margin:12px 0 4px;color:var(--mut);font-size:.9rem}
+input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px}
+.pays{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.pays label{margin:0;color:var(--txt);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:12px 6px;text-align:center;font-weight:700;cursor:pointer}
+.pays input{display:none}
+.pays input:checked+span{color:var(--sun)}
+.pays label:has(input:checked){border-color:var(--sun)}
+.info{background:var(--bg);border-left:4px solid var(--sun);border-radius:8px;padding:10px 12px;margin-top:12px;font-size:.92rem}
+.ok{color:var(--teal);font-weight:600}
+hr{border:0;border-top:1px solid var(--line);margin:18px 0}
+video,iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
+.list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.li{display:flex;align-items:center;gap:8px;background:var(--bg);border-radius:10px;padding:8px 10px}
+.li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--teal);color:#06302a;padding:10px 20px;border-radius:99px;font-weight:700;z-index:99;display:none}
+.band{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--bg2),var(--bg),var(--bg2));padding:14px 0;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:pan-x pan-y}
+.band::-webkit-scrollbar{display:none}
+.band.drag{cursor:grabbing}
+.band[hidden]{display:none}
+nav{max-width:100%;overflow-x:auto;scrollbar-width:none}nav button{padding:8px 12px;white-space:nowrap}
+.seas{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}.seas button{background:var(--bg2);border:2px solid var(--line);border-radius:99px;padding:8px 14px;font-weight:700;color:var(--txt,#fff)}.seas button.on{border-color:var(--pink);background:var(--pink);color:#fff}
+.eprow{grid-template-columns:1fr 1fr 1fr 64px auto}
+.pband{overflow:hidden;border-block:1px solid var(--line);background:var(--bg2);padding:14px 0;margin:6px 0 4px}
+.pband h2{font-size:.8rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);text-align:center;margin-bottom:10px}
+.ptrack{display:flex;gap:14px;width:max-content;animation:pslide 22s linear infinite}
+.pband:hover .ptrack{animation-play-state:paused}
+.pchip{display:flex;align-items:center;gap:10px;height:48px;padding:0 20px 0 8px;border-radius:99px;background:var(--card);border:1px solid var(--line);font-weight:700;white-space:nowrap}
+.pchip i{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;font-style:normal;font-weight:800;color:#fff;font-size:.95rem;overflow:hidden}
+.pchip.lg{padding:5px;height:64px;background:#fff;border-radius:14px;border-color:transparent}.pchip.lg img{height:54px;width:auto;max-width:130px;border-radius:9px;object-fit:contain;display:block}
+@keyframes pslide{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.ptrack{animation:none}.pband{overflow-x:auto}}
+
+.track{display:flex;gap:14px;width:max-content;padding:0 7px}
+.bi{background:none;border:0;padding:0;width:120px;text-align:left;flex:none}
+.bi .poster{border-radius:10px;font-size:2rem;border:2px solid var(--line);transition:border-color .15s;pointer-events:none}
+.bi:hover .poster{border-color:var(--sun)}
+.bi span.nm{display:block;font-weight:600;font-size:.85rem;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:6px 5% 0;scrollbar-width:none}
+.chip{flex:none;background:var(--bg2);border:1px solid var(--line);border-radius:99px;padding:6px 14px;color:var(--mut);font-weight:600}
+.chip.on{background:var(--sun);color:#2a1d00;border-color:var(--sun)}
+.list{max-height:340px;overflow:auto}
+.ahead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;padding-right:30px}
+.ahead h2{margin-right:auto}
+.dirty{background:var(--pink);border-radius:99px;padding:3px 12px;font-size:.8rem;font-weight:700}
+.atabs{display:flex;gap:6px;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.atabs button{flex:none;background:none;border:0;border-bottom:3px solid transparent;padding:10px 14px;color:var(--mut);font-weight:700}
+.atabs button.on{color:var(--sun);border-color:var(--sun)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tools input,.tools select{width:auto;flex:1 1 150px}
+.alist{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.ar{display:flex;align-items:center;gap:10px;background:var(--bg);border-radius:12px;padding:8px}
+.th{width:44px;height:64px;border-radius:6px;background-size:cover;background-position:center;flex:none}
+.ai{flex:1;min-width:0}
+.ai b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ai small{color:var(--mut)}
+.ab{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.seg{display:flex;gap:6px;margin-top:12px}
+.seg button{flex:1;background:var(--bg2);border:2px solid var(--line);border-radius:12px;padding:10px;font-weight:700}
+.seg button.on{border-color:var(--pink);background:var(--pink)}
+.sec{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:4px 14px 14px;margin-top:14px}
+.sec h3{margin-top:12px;font-size:1rem}
+.sec input,.sec select,.sec textarea{background:var(--bg2)}
+.pv{width:80px;aspect-ratio:2/3;border-radius:8px;background:var(--card) center/cover;flex:none}
+.eprow{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;margin-top:6px}
+.chk{display:flex;gap:8px;align-items:center;color:var(--txt);margin-top:16px}
+.chk input{width:auto}
+a.btn{text-decoration:none;display:inline-block;text-align:center}
+@media(max-width:560px){.eprow{grid-template-columns:1fr}.ar{flex-wrap:wrap}.ab{justify-content:flex-start}}
+footer{text-align:center;color:var(--mut);padding:30px 5%;border-top:1px solid var(--line);font-size:.9rem}
+@media(max-width:560px){nav{margin-left:0;width:100%;justify-content:space-between}.row{flex-direction:column}.row .poster{width:100%;aspect-ratio:16/9}.g2{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ===== Animations & 3D ===== */
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;background:radial-gradient(40% 40% at 20% 20%,rgba(255,79,123,.28),transparent),radial-gradient(35% 35% at 80% 30%,rgba(46,230,197,.2),transparent),radial-gradient(40% 40% at 50% 90%,rgba(255,194,61,.16),transparent);animation:aur 16s ease-in-out infinite alternate}
+@keyframes aur{to{transform:translate3d(4%,3%,0) scale(1.12) rotate(4deg)}}
+.hero{position:relative}
+.hero h1{background:linear-gradient(90deg,var(--txt),var(--sun),var(--pink),var(--txt));background-size:300% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sh 9s linear infinite}
+@keyframes sh{to{background-position:-300% 0}}
+.card{transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px));transition:transform .18s ease-out,border-color .15s,box-shadow .2s;animation:up .45s both;animation-delay:calc(var(--i,0)*45ms);will-change:transform}
+.card:hover{--ty:-6px;transform:perspective(700px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px);box-shadow:0 18px 34px rgba(0,0,0,.45),0 0 22px rgba(255,79,123,.25)}
+@keyframes up{from{opacity:0;transform:perspective(700px) translateY(26px) rotateX(14deg)}}
+.poster::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at var(--gx,50%) var(--gy,50%),rgba(255,255,255,.26),transparent 55%);opacity:0;transition:opacity .2s}
+.card:hover .poster::after{opacity:1}
+.modal.open .box{animation:pop .32s cubic-bezier(.2,.9,.3,1.15)}
+@keyframes pop{from{opacity:0;transform:perspective(800px) rotateX(14deg) scale(.92)}}
+.btn{transition:transform .15s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,79,123,.38)}
+.btn.alt:hover{box-shadow:0 8px 20px rgba(46,230,197,.35)}
+.btn:active{transform:scale(.96)}
+.pays label{font-size:.82rem;transition:transform .15s,border-color .15s}
+.pays label:hover{transform:translateY(-2px)}
+.tag{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08)}}
+.logo{cursor:pointer;user-select:none}
+@media(prefers-reduced-motion:reduce){*,body::before{animation:none!important}.card{transform:none}}
+/* ===== Nouveautés & Les plus regardés ===== */
+.rt{font-size:1.25rem;padding:16px 5% 6px}
+.rrow{display:flex;gap:14px;overflow-x:auto;padding:6px 5% 12px;scroll-snap-type:x proximity;scrollbar-width:none}
+.rrow::-webkit-scrollbar{display:none}
+.rrow .bi{scroll-snap-align:start;transition:transform .2s;animation:up .45s both;animation-delay:calc(var(--i,0)*50ms)}
+.rrow .bi:hover{transform:translateY(-6px) scale(1.04)}
+.rk{position:absolute;right:8px;bottom:0;font:800 3.4rem/1 "Bricolage Grotesque",sans-serif;color:var(--bg);-webkit-text-stroke:2px var(--sun);text-shadow:0 4px 12px rgba(0,0,0,.55)}
+/* ===== Mini carrés, anneau 3D, thème clair ===== */
+.grid{display:block}
+.sech{display:flex;align-items:center;gap:10px;margin:24px 0 10px}
+.sech:first-child{margin-top:0}
+.sech h2{font-size:1.15rem}
+.sech span{background:var(--bg2);border:1px solid var(--line);border-radius:99px;padding:1px 10px;font-size:.8rem;color:var(--mut)}
+.sq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:10px}
+.empty2{color:var(--mut);font-size:.9rem;padding:4px 0 6px}
+.card{position:relative}
+.card .poster{aspect-ratio:1/1;align-items:center;justify-content:center;font-size:2rem;color:#fff;background-position:center 20%}
+.card h3{position:absolute;left:0;right:0;bottom:0;padding:24px 6px 6px;font-size:.68rem;line-height:1.15;color:#fff;background:linear-gradient(transparent,rgba(8,5,22,.95));display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;pointer-events:none}
+.card .tag{top:4px;right:4px;font-size:.6rem;padding:1px 6px;animation:none}
+.bd{position:absolute;top:4px;left:4px;display:flex;gap:3px;align-items:center;z-index:1;pointer-events:none}
+.st{font-style:normal;font-size:.95rem;line-height:1;color:var(--sun);text-shadow:0 1px 6px rgba(0,0,0,.8)}
+.nw{background:var(--pink);color:#fff;font:800 .55rem Figtree,sans-serif;padding:1px 5px;border-radius:99px;letter-spacing:.4px}
+.cube3d{position:absolute;right:17%;top:34px;width:1px;height:170px;perspective:900px;perspective-origin:50% 30%;animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-9px)}}
+.cube3d::after{content:"";position:absolute;left:-95px;bottom:-30px;width:190px;height:28px;background:radial-gradient(ellipse,rgba(255,79,123,.5),transparent 70%);filter:blur(6px);pointer-events:none}
+.ring{position:absolute;left:0;top:0;transform-style:preserve-3d;animation:ringspin 24s linear infinite}
+@keyframes ringspin{from{transform:rotateX(-10deg) rotateY(0)}to{transform:rotateX(-10deg) rotateY(-360deg)}}
+.cube3d:hover .ring{animation-play-state:paused}
+.rc{position:absolute;left:calc(var(--w)/-2);top:0;width:var(--w);height:var(--h);padding:0;border:1px solid rgba(255,255,255,.28);border-radius:10px;background-size:cover;background-position:center;transform:rotateY(calc(var(--k)*360deg/var(--n))) translateZ(var(--R));box-shadow:0 10px 26px rgba(0,0,0,.5);-webkit-box-reflect:below 4px linear-gradient(transparent 72%,rgba(255,255,255,.2));cursor:pointer}
+.rc span{display:grid;place-items:center;height:100%;font:800 2rem "Bricolage Grotesque",sans-serif;color:#fff}
+@media(max-width:700px){.cube3d{position:relative;right:auto;top:auto;margin:34px auto 26px;height:100px;perspective:700px}}
+[data-theme=light]{--bg:#f5f2ff;--bg2:#ffffff;--card:#ffffff;--line:#d8d0f0;--txt:#1d1740;--mut:#6a6290;--sun:#d98e00;--hd:rgba(245,242,255,.92);color-scheme:light}
+[data-theme=light] body::before{opacity:.45}
+[data-theme=light] .hero h1{background-image:linear-gradient(90deg,var(--txt),var(--pink),#7b4dff,var(--txt))}
+[data-theme=light] .card{box-shadow:0 3px 10px rgba(60,40,120,.12)}
+body{transition:background .35s,color .35s}
+/* ===== Sections animées ===== */
+.sq-grid{display:flex;gap:10px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;padding:12px 2px 18px;margin:-8px 0 -6px;touch-action:pan-x pan-y;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,transparent,#000 22px,#000 calc(100% - 22px),transparent)}
+.sq-grid::-webkit-scrollbar,.rrow::-webkit-scrollbar{display:none}
+.sq-grid .card{flex:none;width:92px}
+.rrow{scroll-snap-type:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent);mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.sech h2{position:relative;display:inline-block;animation:slideIn .6s both}
+.sech h2::after{content:"";position:absolute;left:0;right:0;bottom:-5px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--pink),var(--sun),var(--teal),var(--pink));background-size:200% 100%;animation:flow 3s linear infinite}
+.sech h2 em{display:inline-block;font-style:normal;animation:hop 2.2s ease-in-out infinite}
+.sech span{animation:pulse 2.8s ease-in-out infinite}
+@keyframes flow{to{background-position:-200% 0}}
+@keyframes slideIn{from{opacity:0;transform:translateX(-26px)}}
+@keyframes hop{50%{transform:translateY(-4px) rotate(-10deg)}}
+/* ===== Bouton bande-annonce ===== */
+.poster[data-trailer]{cursor:pointer}
+.play{position:absolute;inset:0;margin:auto;width:46px;height:46px;border:0;border-radius:50%;background:rgba(255,79,123,.94);color:#fff;font-size:1.1rem;padding-left:3px;display:grid;place-items:center;box-shadow:0 0 0 0 rgba(255,79,123,.6);animation:ping 2s infinite;transition:transform .15s}
+.play:hover{transform:scale(1.12)}
+@keyframes ping{70%{box-shadow:0 0 0 14px rgba(255,79,123,0)}100%{box-shadow:0 0 0 0 rgba(255,79,123,0)}}
+/* ===== Mobile : zones sûres ===== */
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+header{top:env(safe-area-inset-top,0px)}
+body::after{content:"";position:fixed;inset:0 0 auto 0;height:env(safe-area-inset-top,0px);z-index:11;background:var(--hd);backdrop-filter:blur(8px);pointer-events:none}
+.toast{bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+
+/* ===== Nouveau design : style application de streaming (sombre, accent vert) ===== */
+:root{--bg:#0b0b0c;--bg2:#151516;--card:#1a1a1c;--line:#2b2b2e;--txt:#f3f3f3;--mut:#9b9ba1;--pink:#16c784;--sun:#16c784;--teal:#16c784;--hd:rgba(11,11,12,.95)}
+body{padding-bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+header{gap:8px 10px;padding:10px 4% 0;border-bottom:0;background:var(--hd)}
+.logo{order:1}.logo span{display:none}
+.sbox{order:2;flex:1;position:relative;min-width:0}
+.sbox .search{width:100%;max-width:none;background:#232326;border:0;border-radius:99px;padding:10px 96px 10px 16px}
+.sbox span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--pink);font-weight:800;pointer-events:none}
+header nav{order:3;width:100%;margin:0;justify-content:space-between;gap:0}
+nav button{background:none!important;color:var(--mut);border-radius:0;padding:10px 12px;font-weight:700;border-bottom:3px solid transparent}
+nav button.on{color:#fff!important;border-bottom-color:var(--pink)}
+header .adm{display:none}
+header #installBtn:not([hidden]){display:inline-block;order:2}
+.btn{color:#04170f}.btn.ghost{color:var(--txt)}.btn.alt{color:#04170f}
+.chip.on{color:#04170f}
+.tag{left:0;right:auto;top:0;background:rgba(0,0,0,.72);color:#fff;border-radius:0 0 8px 0;padding:2px 8px;font-size:.68rem;font-weight:700}
+.card{background:none;border:0;border-radius:8px}.card:hover{transform:none}
+.poster{border-radius:8px}
+.card h3{padding:6px 2px 0;font-size:.82rem;font-weight:600;color:#e6e6e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bi .poster{border:0}
+.bi span.nm{color:#e6e6e6;font-weight:600}
+.rk{left:6px;right:auto;bottom:-6px;color:rgba(255,255,255,.22);-webkit-text-stroke:0;font-size:4.2rem}
+.rth{display:flex;align-items:center;justify-content:space-between;padding:0 5%;margin-top:18px}
+.rth .rt{padding:0;margin:0}
+.all{background:none;border:0;color:var(--mut);font-weight:600}
+.sech h2::after{display:none}
+.sech span{animation:none;background:none;border:0;color:var(--mut)}
+.band{background:var(--bg);border-bottom:0}
+.hero{padding-top:20px}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:var(--hd);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:6px 0 calc(6px + env(safe-area-inset-bottom,0px))}
+.bnav button{flex:1;background:none;border:0;color:var(--mut);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.7rem;font-weight:600;padding:4px 2px}
+.bnav button.on{color:var(--pink)}
+.bnav svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.toast{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+
+body.searching .hero,body.searching #band,body.searching .pband,body.searching #rows{display:none}
+body.searching #grid{padding-top:14px}
+#rkList .li{display:flex;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
+.sbox .search::-webkit-search-cancel-button{display:none;-webkit-appearance:none}
+.bnav button{transition:color .15s}
+
+html[data-theme=light]{--bg:#f4f5f7;--bg2:#ffffff;--card:#ffffff;--line:#dfe1e6;--txt:#17181b;--mut:#666b75;--pink:#0e9f62;--sun:#0e9f62;--teal:#0e9f62;--hd:rgba(255,255,255,.96)}
+html[data-theme=light] .sbox .search{background:#e9ebef}
+html[data-theme=light] nav button.on{color:var(--txt)!important}
+html[data-theme=light] .card h3,html[data-theme=light] .bi span.nm{color:var(--txt)}
+html[data-theme=light] .rk{color:rgba(0,0,0,.18)}
+html[data-theme=light] .btn,html[data-theme=light] .btn.alt,html[data-theme=light] .chip.on,html[data-theme=light] .seas button.on{color:#fff}
+html[data-theme=light] .btn.ghost{color:var(--txt)}
+html[data-theme=light] .pchip.lg{box-shadow:0 1px 6px rgba(0,0,0,.12)}
+.opts{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+.opts button{background:var(--bg);border:2px solid var(--line);border-radius:99px;padding:8px 16px;font-weight:700;color:var(--txt)}
+.opts button.on{border-color:var(--pink);background:var(--pink);color:#04170f}
+html[data-theme=light] .opts button.on{color:#fff}
+.setrow{border-bottom:1px solid var(--line);padding:12px 0}
+.setrow h3{font-size:1rem;margin-bottom:2px}
+
+.dlApp{display:flex;align-items:center;gap:12px;width:100%;margin:10px 0 4px;padding:14px 16px;border:0;border-radius:16px;background:linear-gradient(135deg,var(--pink),#7b3cff);color:#fff;text-align:left;box-shadow:0 8px 22px rgba(123,60,255,.35)}
+.dlApp .ic{font-size:1.8rem;line-height:1}.dlApp b{display:block;font-size:1.05rem}.dlApp small{display:block;opacity:.9;font-size:.78rem;margin-top:2px}
+html[data-theme=light] .dlApp{color:#fff}
+.howto{margin:8px 0 0;padding-left:20px;line-height:1.7}.howto li{margin:4px 0}
+.howtab{display:flex;gap:8px;margin:12px 0 4px}.howtab button{flex:1}.howtab button.on{background:var(--pink);color:#fff;border-color:transparent}
+.setbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+html.fs-big body{font-size:18px}html.fs-big .card h3,html.fs-big .bi span.nm{font-size:.95rem}
+
+.sech{cursor:pointer}.sech .all{margin-left:auto}
+.modal.full{padding:0;align-items:stretch;justify-content:stretch;background:var(--bg)}
+.lbox{width:100%;overflow:auto;padding:0 4% calc(40px + env(safe-area-inset-bottom,0px))}
+.lhead{position:sticky;top:0;z-index:2;background:var(--bg);display:flex;align-items:center;gap:10px;padding:calc(10px + env(safe-area-inset-top,0px)) 0 12px}
+.lhead h2{font-size:1.2rem;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lhead span{color:var(--mut);font-weight:700}
+.lback{background:none;border:0;font-size:2.2rem;line-height:1;color:var(--txt);padding:0 8px 4px 0}
+.lgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px}
+.lgrid .card{width:auto}
+@media(min-width:700px){.lgrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}}
+/* ===== Mise en page mobile compacte (plus jolie, plus d'affiches visibles) ===== */
+@media(max-width:700px){
+  body{font-size:15px}
+  .hero{padding:14px 5% 4px}
+  .hero h1{font-size:1.5rem;line-height:1.15;max-width:none;letter-spacing:-.3px}
+  .hero p{font-size:.84rem;line-height:1.45;margin-top:6px;max-width:none;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .price{flex-wrap:nowrap;overflow-x:auto;gap:8px;margin:12px -5% 0;padding:0 5% 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .price::-webkit-scrollbar{display:none}
+  .price span{flex:none;white-space:nowrap;font-size:.78rem;padding:6px 12px;font-weight:600}
+  .cube3d{margin:14px auto 8px;height:100px}
+  nav button{font-size:.92rem;padding:9px 10px}
+  .rt{font-size:1.05rem}
+  .sech h2{font-size:1.02rem}
+  .bnav button{font-size:.66rem}
+  .bnav svg{width:21px;height:21px}
+}
+/* ===== Performance : moins d'animations permanentes, images à la demande ===== */
+[style*="--bg:"]{background-color:var(--bg2);background-size:cover;background-position:center 20%}
+[style*="--bg:"].lz-in{background-image:var(--bg)}
+body::before{animation:none}
+.hero h1{animation:none;background-size:100% 100%}
+.card,.rrow .bi{will-change:auto;animation:none}
+.sech h2,.sech h2 em,.sech span,.tag{animation:none}
+header,.bnav,body::after,.modal,.box{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+header,.bnav,body::after{background:var(--bg)}
+.hero.paused .ring,.hero.paused .cube3d,.pband.paused .ptrack{animation-play-state:paused}
+@media(hover:none){.card,.card:hover{transform:none;box-shadow:none}.rrow{-webkit-mask-image:none;mask-image:none}}
+/* ===== Avis, notation et FAQ ===== */
+.fx{padding:26px 5% 14px;max-width:760px;margin:0 auto}
+.fx h2{font-size:1.15rem;margin:24px 0 10px}.fx h2:first-child{margin-top:0}
+.rbox,.rev,.faq details{background:var(--bg2);border:1px solid var(--line);border-radius:16px}
+.rbox{padding:16px}
+.rsum{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;color:var(--mut);font-size:.9rem}
+.rsum .big{font-size:2rem;font-weight:800;color:var(--txt);line-height:1}
+.rstars{display:flex;gap:4px;margin:10px 0 12px}
+.rstars button{background:none;border:0;font-size:2.3rem;line-height:1;color:var(--line);padding:2px 4px;transition:transform .12s,color .12s}
+.rstars button.on{color:#ffc23d}.rstars button:active{transform:scale(1.2)}
+.rbox textarea,.rbox input{display:block;width:100%;margin-top:8px;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--bg);resize:vertical}
+.rmsg{margin-top:10px;font-size:.9rem;color:var(--sun)}
+.rev{padding:12px 14px;margin-top:10px}.rev .rh{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.rev .st{color:#ffc23d;letter-spacing:1px}.rev p{color:var(--mut);margin-top:4px;font-size:.92rem}
+.rempty{color:var(--mut);font-size:.9rem;margin-top:12px}
+.faq details{margin-top:8px;overflow:hidden}
+.faq summary{padding:13px 14px;font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--pink);font-size:1.4rem;line-height:1;flex:none}
+.faq details[open] summary::after{content:"–"}
+.faq p{padding:0 14px 14px;color:var(--mut);font-size:.92rem;line-height:1.55}
+body.searching .fx{display:none}
+.shareBox{margin:12px 0 4px;padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--bg2)}
+.shareBox h3{font-size:1rem;margin-bottom:2px}.shareBox p{color:var(--mut);font-size:.85rem;margin-bottom:10px}
+.shareBox input{display:block;width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:12px;background:var(--bg);font-size:.9rem;text-overflow:ellipsis}
+.shareBtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.shareBtns #shNative{grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><img src="logo.png" alt="Fabi Ciné" width="44" height="44"><span>Fabi<b> </b><i>Ciné</i></span></div>
+  <nav id="tabs">
+    <button data-t="all" class="on">Tout</button>
+    <button data-t="film">Films</button>
+    <button data-t="serie">Séries</button>
+    <button data-t="manga">Mangas</button>
+    <button data-t="enfant">Enfants</button>
+  </nav>
+  <div class="sbox"><input class="search" id="q" type="search" placeholder="Rechercher un titre…" aria-label="Rechercher"><span>Recherche</span></div>
+  <button class="adm" id="myBtn">Mes achats</button>
+  <button class="adm" id="installBtn" hidden>📲 Installer</button>
+  <button class="adm" id="themeBtn" aria-label="Changer la couleur du fond">☀️ Blanc</button>
+  <button class="adm" id="admBtn" hidden>Admin</button>
+</header>
+
+<section class="band" id="band" aria-label="À la une" hidden><div class="track" id="track"></div></section>
+
+<section class="hero">
+  <h1>Votre cinéma, sur votre téléphone.</h1>
+  <p>Regardez et téléchargez vos films, séries, mangas et dessins animés préférés. Paiement simple par NITA, AMANA TA, WAVE, Zcash, Airtel Money ou Flooz.</p>
+  <div class="price" id="priceBar"></div>
+  <div class="cube3d" id="ring3d"></div>
+</section>
+
+<section class="pband" aria-label="Moyens de paiement"><h2>Paiement accepté</h2><div class="ptrack" id="ptrack"></div></section>
+
+<section class="rows" id="rows" aria-label="Nouveautés et populaires"></section>
+<div class="chips" id="chips"></div>
+<main class="grid" id="grid"></main>
+
+<section class="fx" id="infos">
+  <h2>⭐ Votre avis compte</h2>
+  <div class="rbox">
+    <div class="rsum" id="rSum"></div>
+    <div class="rstars" id="rStars" role="group" aria-label="Note">
+      <button type="button" data-s="1" aria-label="1/5">★</button><button type="button" data-s="2" aria-label="2/5">★</button><button type="button" data-s="3" aria-label="3/5">★</button><button type="button" data-s="4" aria-label="4/5">★</button><button type="button" data-s="5" aria-label="5/5">★</button>
+    </div>
+    <textarea id="rText" rows="3" maxlength="400" placeholder="Dites-nous ce que vous pensez (facultatif)"></textarea>
+    <input id="rName" maxlength="40" placeholder="Votre prénom (facultatif)" autocomplete="given-name">
+    <button type="button" class="btn" id="rSend" style="width:100%;margin-top:10px">Envoyer mon avis</button>
+    <p id="rMsg" class="rmsg"></p>
+  </div>
+  <div id="rList"></div>
+  <h2>❓ Questions fréquentes</h2>
+  <div class="faq">
+    <details><summary>Comment ça marche ?</summary><p>Choisissez un titre, payez par mobile money, envoyez-nous votre reçu sur WhatsApp, puis débloquez-le avec le code à 6 chiffres que nous vous envoyons.</p></details>
+    <details><summary>Quels moyens de paiement acceptez-vous ?</summary><p>NITA, AMANA TA, WAVE, Zcash, Airtel Money et Flooz.</p></details>
+    <details><summary>Quels sont les prix ?</summary><p id="faqPrix"></p></details>
+    <details><summary>Combien de temps pour recevoir mon code ?</summary><p>Dès que nous avons vérifié votre reçu sur WhatsApp, nous vous envoyons votre code. Plus votre message est complet (nom, numéro, référence), plus c’est rapide.</p></details>
+    <details><summary>Puis-je regarder et télécharger mes titres ?</summary><p>Oui. Une fois le titre débloqué, vous pouvez le regarder ou le télécharger depuis sa fiche, et le retrouver à tout moment dans « Mes achats ».</p></details>
+    <details><summary>Comment installer l’application sur mon téléphone ?</summary><p>Ouvrez les Paramètres puis touchez « Télécharger l’application ». Sur iPhone, utilisez le bouton Partager de Safari puis « Sur l’écran d’accueil ».</p></details>
+    <details><summary>Mon code ne marche pas, que faire ?</summary><p>Le code est lié au titre et au numéro de téléphone indiqués lors du paiement. Vérifiez ce numéro, puis écrivez-nous sur WhatsApp si le problème continue.</p></details>
+    <details><summary>J’ai changé de téléphone, vais-je perdre mes achats ?</summary><p>Vos achats sont enregistrés sur l’appareil. Si vous changez de téléphone, écrivez-nous sur WhatsApp avec votre preuve de paiement : nous pourrons vous aider à les retrouver.</p></details>
+  </div>
+  <a class="btn alt" id="faqWa" href="#" target="_blank" rel="noopener" style="display:block;margin-top:14px">Une autre question ? Écrivez-nous sur WhatsApp</a>
+</section>
+
+<footer>© Fabi Cine – Questions ? <a href="#" id="wa" style="color:var(--sun)">Écrivez-nous sur WhatsApp</a></footer>
+
+<!-- Fiche -->
+<div class="modal" id="mRank"><div class="box wide"><button class="x" data-close>×</button><h2>🏆 Classement</h2><div class="chips" id="rkChips" style="padding:10px 0 0"></div><div id="rkList" class="list"></div></div></div>
+<div class="modal" id="mSet"><div class="box"><button class="x" data-close aria-label="Fermer">×</button>
+  <h2>⚙️ Paramètres</h2>
+  <button type="button" class="dlApp" id="setInstall"><span class="ic">📲</span><span><b>Télécharger l’application</b><small>Installer Fabi Ciné sur votre téléphone</small></span></button>
+    <div class="shareBox">
+    <h3>🔗 Partager l’application</h3>
+    <p>Envoyez ce lien à vos amis et à votre famille.</p>
+    <input id="shareUrl" readonly aria-label="Lien" onfocus="this.select()">
+    <div class="shareBtns"><button type="button" class="btn" id="shNative">Partager</button><button type="button" class="btn alt" id="shWa">WhatsApp</button><button type="button" class="btn ghost" id="shCopy">Copier le lien</button></div>
+  </div>
+  <div class="setrow"><h3>Langue</h3><div class="opts" id="setLang"><button type="button" data-lang="fr">Français</button><button type="button" data-lang="en">English</button></div></div>
+  <div class="setrow"><h3>Apparence</h3><div class="opts" id="setTheme"><button type="button" data-th="dark">🌙 Noir</button><button type="button" data-th="light">☀️ Blanc</button><button type="button" data-th="auto">📱 Auto</button></div></div>
+  <div class="setrow"><h3>Taille du texte</h3><div class="opts" id="setFs"><button type="button" data-fs="normal">Normal</button><button type="button" data-fs="big">Grand</button></div></div>
+  <div class="setbtns">
+    <button type="button" class="btn ghost" id="setMine">Mes achats</button>
+    <button type="button" class="btn ghost" id="setWa">Nous contacter</button>
+  </div>
+  <button type="button" class="btn ghost" id="setClear" style="width:100%;margin-top:8px">Vider le cache et recharger</button>
+  <p style="color:var(--mut);font-size:.8rem;margin-top:14px;text-align:center">Fabi Ciné · version 2026-11-11</p>
+</div></div>
+<div class="modal" id="mInstall"><div class="box"><button class="x" data-close aria-label="Fermer">×</button>
+  <h2>📲 Installer Fabi Ciné</h2>
+  <div class="howtab"><button type="button" class="btn ghost" data-how="android">🤖 Android</button><button type="button" class="btn ghost" data-how="ios">🍎 iPhone</button></div>
+  <ol class="howto" id="howAndroid"><li>Ouvrez ce site dans <b>Chrome</b>.</li><li>Touchez le menu <b>⋮</b> en haut à droite.</li><li>Choisissez <b>« Installer l’application »</b> (ou « Ajouter à l’écran d’accueil »).</li><li>Validez : l’icône Fabi Ciné apparaît sur votre téléphone.</li></ol>
+  <ol class="howto" id="howIos" hidden><li>Ouvrez ce site dans <b>Safari</b>.</li><li>Touchez le bouton <b>Partager</b> (carré avec une flèche).</li><li>Choisissez <b>« Sur l’écran d’accueil »</b>.</li><li>Touchez <b>Ajouter</b> : l’icône apparaît sur votre téléphone.</li></ol>
+  <a class="btn alt" id="apkLink" hidden style="display:none;width:100%;margin-top:14px" download>⬇️ Télécharger le fichier APK (Android)</a>
+</div></div>
+<div class="modal full" id="mList"><div class="lbox"><div class="lhead"><button type="button" class="lback" data-close aria-label="Retour">‹</button><h2 id="lTitle"></h2><span id="lCount"></span></div><div class="lgrid" id="lGrid"></div></div></div>
+<div class="modal" id="mDetail"><div class="box wide"><button class="x" data-close>×</button><div id="detail"></div></div></div>
+
+<!-- Paiement -->
+<div class="modal" id="mPay"><div class="box"><button class="x" data-close>×</button>
+  <h2 id="payTitle">Paiement</h2>
+  <p id="paySub" style="color:var(--mut)"></p>
+  <div id="payS" hidden><label for="pSeas">Saison à débloquer (une saison = un paiement)</label><select id="pSeas"></select></div>
+  <label>Moyen de paiement</label>
+  <div class="pays" id="pays"></div>
+  <div class="info" id="payInfo"></div>
+  <label for="pName">Votre nom</label><input id="pName" autocomplete="name">
+  <label for="pPhone">Votre numéro de téléphone</label><input id="pPhone" type="tel" autocomplete="tel" placeholder="+227 …">
+  <label for="pRef">Référence de la transaction</label><input id="pRef" placeholder="Ex. numéro du reçu">
+  <div class="btns"><button class="btn alt" id="sendWa">Envoyer mon reçu sur WhatsApp</button></div>
+  <hr>
+  <p>Après vérification, nous vous envoyons un code à 6 chiffres.</p>
+  <label for="pCode">Code de déblocage</label><input id="pCode" inputmode="numeric" maxlength="6">
+  <div class="btns"><button class="btn" id="unlock">Débloquer</button></div>
+  <p id="payMsg" style="margin-top:10px"></p>
+</div></div>
+
+<!-- Mes achats -->
+<div class="modal" id="mMine"><div class="box"><button class="x" data-close>×</button>
+  <h2>Mes achats</h2><p style="color:var(--mut)">Retrouvez ici vos titres débloqués pour les regarder ou les télécharger à nouveau.</p>
+  <div class="list" id="mineList"></div>
+</div></div>
+
+<!-- Lecteur -->
+<!-- Bande-annonce -->
+<div class="modal" id="mTrailer"><div class="box wide"><button class="x" data-close aria-label="Fermer">×</button><h3 id="tTitle" style="margin-bottom:10px;padding-right:28px"></h3><div id="tPlayer"></div></div></div>
+<div class="modal" id="mPlay"><div class="box wide"><button class="x" data-close>×</button><h3 id="playTitle" style="margin-bottom:10px"></h3><div id="player"></div></div></div>
+
+<!-- Admin -->
+<div class="modal" id="mAdmin"><div class="box wide"><button class="x" data-close>×</button>
+  <div id="login">
+    <h2>Espace administrateur</h2>
+    <label for="aPass">Mot de passe</label><input id="aPass" type="password">
+    <div class="btns"><button class="btn" id="aLogin">Se connecter</button></div>
+  </div>
+  <div id="panel" style="display:none">
+    <div class="ahead"><h2>Administration</h2><span class="dirty" id="dirty" hidden>Non publié</span><button class="btn alt sm" id="pub">Publier le site</button></div>
+    <div class="atabs" id="atabs"><button data-at="cat" class="on">Catalogue</button><button data-at="add">Ajouter</button><button data-at="pay">Paiements</button><button data-at="tools">Outils</button></div>
+
+    <div class="apane" id="ap-cat">
+      <div class="tools"><input id="aSearch" type="search" placeholder="Rechercher un titre…" aria-label="Rechercher"><select id="aType" aria-label="Type"><option value="">Tout</option><option value="film">Films</option><option value="serie">Séries</option><option value="manga">Mangas</option><option value="enfant">Dessins animés</option></select><button class="btn sm" id="addNew">+ Ajouter un titre</button></div>
+      <p id="aCount" style="color:var(--mut);font-size:.9rem;margin-top:8px"></p>
+      <div class="alist" id="aList"></div>
+    </div>
+
+    <div class="apane" id="ap-add" hidden>
+      <h3 id="formTitle">Nouveau titre</h3>
+      <form id="form" onsubmit="return false">
+        <input type="hidden" id="fId">
+        <select id="fType" hidden><option value="film">Film</option><option value="serie">Série</option><option value="manga">Manga</option><option value="enfant">Dessin animé</option></select>
+        <div class="sec"><h3>1. Type et informations</h3>
+          <div class="seg" id="seg"><button type="button" data-ty="film" class="on">Film</button><button type="button" data-ty="serie">Série</button><button type="button" data-ty="manga">Manga</button><button type="button" data-ty="enfant">Dessin animé</button></div>
+          <label for="fTitle">Titre</label><input id="fTitle">
+          <div class="g2"><div><label for="fCat">Genre</label><select id="fCat"></select></div><div><label for="fPrice">Prix (FCFA) : film 150, série ou manga 300 par saison</label><input id="fPrice" type="number" min="0"></div></div>
+          <div id="seasBox"><label for="fSeas">Nombre de saisons</label><input id="fSeas" type="number" min="1" value="1"></div>
+          <label for="fSyn">Description</label><textarea id="fSyn" rows="3"></textarea>
+          <div class="g2"><div><label for="fPop">Popularité (0 à 100)</label><input id="fPop" type="number" min="0" max="100" placeholder="Ex. 80"></div><div><label class="chk" style="margin-top:34px"><input type="checkbox" id="fNouv"> Nouveauté</label></div></div>
+        </div>
+        <div class="sec"><h3>2. Affiche</h3>
+          <div style="display:flex;gap:12px;align-items:flex-start;margin-top:10px"><div class="pv" id="pv"></div><div style="flex:1;min-width:0"><label for="fFile" style="margin-top:0">Choisir une image sur l’appareil</label><input id="fFile" type="file" accept="image/*"><label for="fPoster">…ou coller un lien d’image</label><input id="fPoster" placeholder="https://…"></div></div>
+        </div>
+        <div class="sec"><h3>3. Fichiers</h3>
+          <div class="info" style="margin-top:10px">Envoyez la vidéo sur Google Drive ou Dropbox (partage « Toute personne disposant du lien »), puis collez le lien : il est converti automatiquement.</div>
+          <label for="fWatch">Lien pour regarder</label><input id="fWatch">
+          <label for="fDl">Lien pour télécharger (vide = même lien)</label><input id="fDl">
+          <label for="fTr">Lien de la bande-annonce (YouTube)</label><input id="fTr" placeholder="https://youtu.be/…">
+        </div>
+        <div class="sec" id="epBox" hidden><h3>4. Épisodes ou chapitres</h3>
+          <div id="epRows"></div>
+          <div class="btns"><button type="button" class="btn ghost sm" id="epAdd1">+ 1 épisode</button><button type="button" class="btn ghost sm" id="epAdd5">+ 5 épisodes</button></div>
+        </div>
+        <label class="chk"><input type="checkbox" id="fUne"> Afficher dans la bande de l’accueil</label>
+        <div class="btns"><button type="button" class="btn" id="fSave">Enregistrer</button><button type="button" class="btn ghost" id="fCancel">Annuler</button></div>
+      </form>
+    </div>
+
+    <div class="apane" id="ap-pay" hidden>
+      <h3>Débloquer un titre pour un client</h3>
+      <p style="color:var(--mut);font-size:.9rem">Vérifiez d’abord le reçu reçu sur WhatsApp. Choisissez ensuite le titre, saisissez le numéro du client avec l’indicatif (ex. 227…) et envoyez-lui le code.</p>
+      <label for="cItem">Titre</label><select id="cItem"></select>
+      <div id="cSeasBox" hidden><label for="cSeas">Saison</label><select id="cSeas"></select></div>
+      <label for="cPhone">Téléphone du client</label><input id="cPhone" type="tel" placeholder="227 …">
+      <div class="btns"><button class="btn alt" id="cGen">Générer le code</button></div>
+      <div id="cRes" hidden>
+        <p style="margin-top:14px">Code : <strong id="cOut" style="font-size:1.5rem;color:var(--sun)"></strong></p>
+        <div class="btns"><a class="btn" id="cWa" target="_blank" rel="noopener">Envoyer par WhatsApp</a><button class="btn ghost" id="cCopy">Copier le code</button></div>
+      </div>
+    </div>
+
+    <div class="apane" id="ap-tools" hidden>
+      <h3>Publier vos modifications</h3>
+      <p style="color:var(--mut);font-size:.9rem">Après vos changements, cliquez sur « Publier le site » (en haut) : un nouveau fichier index.html se télécharge. Republiez-le sur votre hébergeur pour que vos clients voient le nouveau catalogue.</p>
+      <h3 style="margin-top:18px">Sauvegarde</h3>
+      <div class="btns"><button class="btn ghost sm" id="exp">Exporter (JSON)</button><button class="btn ghost sm" id="imp">Importer (JSON)</button><button class="btn ghost sm" id="rst">Réinitialiser</button></div>
+    </div>
+  </div>
+</div></div>
+<input type="file" id="quickFile" accept="image/*" hidden>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= CONFIGURATION : à modifier ================= */
+const CONFIG = {
+  ADMIN_HASH: "9caa035fd0e2faedb30854310e7f71bb009399a0096efe7aa839b0a7f440fd98",   // empreinte du mot de passe admin
+  SECRET: "f3c7280fffb260c8ba39c591",   // clé secrète des codes de déblocage
+  SHARE_URL: "",                        // Adresse publique à partager (ex: "https://fabi-cine.netlify.app"). Vide = adresse actuelle de l'application
+  CATALOG_URL: "",                      // Catalogue en ligne : collez ici l'adresse du script Google (voir INSTALLER-CATALOGUE.txt). Vide = ancien mode (fichier à republier)
+  AVIS_URL: "",                         // Avis automatiques : collez ici l'adresse du script Google (voir INSTALLER-AVIS.txt)
+  AVIS: [],                            // Avis publiés. Ajoutez ici de VRAIS avis reçus : {nom:"Awa", note:5, texte:"Super application !"}
+  APK_URL: "",                          // Optionnel : lien direct du fichier .apk (ex: "fabi-cine.apk")
+  WHATSAPP: "22777949172",             // Numéro administrateur
+  DEVISE: "FCFA",
+  CATS: ["Nollywood","Afrique","K-drama","Action","Aventure","Romance","Comédie","Thriller","Animation"],
+  PRIX: { film: 150, serie: 300, manga: 300, enfant: 300 },
+  LOGOS: { "NITA":"pay/nita.png", "AMANA TA":"pay/amana.png", "WAVE":"pay/wave.png", "Zcash":"pay/zcash.png", "Airtel Money":"pay/airtel.png", "Flooz":"pay/flooz.png" },   // Pour mettre un vrai logo : "WAVE": "pay/wave.png" (image dans le dossier) ; sinon une pastille de couleur est affichée
+  COULEURS: { "NITA":"#1f9d55", "AMANA TA":"#7a4cff", "WAVE":"#1dc8ff", "Zcash":"#d4007f", "Airtel Money":"#e40000", "Flooz":"#0a6cc2" },
+  PAIEMENTS: {                         // Quand vous avez vos numéros : remplacez le texte par « Envoyez le montant au numéro … : +227 … »
+    "NITA": "Paiement par NITA. Écrivez-nous sur WhatsApp au +227 77 94 91 72 pour recevoir le numéro de réception.",
+    "AMANA TA": "Paiement par AMANA TA. Écrivez-nous sur WhatsApp au +227 77 94 91 72 pour recevoir le numéro de réception.",
+    "WAVE": "Paiement par WAVE. Écrivez-nous sur WhatsApp au +227 77 94 91 72 pour recevoir le numéro de réception.",
+    "Zcash": "Paiement par Zcash. Écrivez-nous sur WhatsApp au +227 77 94 91 72 pour recevoir le numéro de réception.",
+    "Airtel Money": "Paiement par Airtel Money. Écrivez-nous sur WhatsApp au +227 77 94 91 72 pour recevoir le numéro de réception.",
+    "Flooz": "Paiement par Flooz. Écrivez-nous sur WhatsApp au +227 77 94 91 72 pour recevoir le numéro de réception."
+  }
+};
+
+
+/* ============ CATALOGUE DE DÉPART (modifiable via le panneau Admin) ============ */
+const DEFAUT = [{"id": "b1", "pop": 95, "type": "manga", "title": "One Piece", "poster": "posters/b1.jpg", "synopsis": "Monkey D. Luffy, un garçon au corps élastique, rêve de devenir le roi des pirates. Avec son équipage, il traverse les mers à la recherche du légendaire trésor One Piece.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "une": true, "trailer": "https://www.youtube.com/results?search_query=One+Piece+bande+annonce+trailer+officiel", "seasons": 20}, {"id": "b2", "pop": 90, "type": "manga", "title": "Naruto Shippuden", "poster": "posters/b2.jpg", "synopsis": "Naruto Uzumaki, ninja turbulent longtemps rejeté par son village, rêve de devenir Hokage. Avec Sakura et Kakashi, il affronte des ennemis de plus en plus puissants.", "price": 300, "watch": "", "dl": "", "cat": "Action", "une": true, "trailer": "https://www.youtube.com/results?search_query=Naruto+Shippuden+bande+annonce+trailer+officiel", "seasons": 21}, {"id": "b3", "pop": 88, "type": "manga", "title": "Dragon Ball Z", "poster": "posters/b3.jpg", "synopsis": "Goku et ses alliés, Végéta, Piccolo, Krilin et Gohan, défendent la Terre contre des guerriers venus de l’espace. Combats épiques et amitié au programme.", "price": 300, "watch": "", "dl": "", "cat": "Action", "une": true, "trailer": "https://www.youtube.com/results?search_query=Dragon+Ball+Z+bande+annonce+trailer+officiel", "seasons": 9}, {"id": "b4", "pop": 85, "type": "manga", "title": "Demon Slayer : Le train de l’infini", "poster": "posters/b4.jpg", "synopsis": "Tanjiro et ses compagnons montent à bord d’un train où des passagers disparaissent mystérieusement. Avec le pilier Rengoku, ils affrontent un démon redoutable.", "price": 300, "watch": "", "dl": "", "cat": "Action", "une": true, "trailer": "https://www.youtube.com/results?search_query=Demon+Slayer+%3A+Le+train+de+l%27infini+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "b5", "pop": 92, "type": "serie", "title": "La Casa de Papel", "poster": "posters/b5.jpg", "synopsis": "Un mystérieux Professeur réunit huit braqueurs masqués pour s’attaquer à la Fabrique nationale de la monnaie et du timbre d’Espagne. Otages, plan millimétré et bras de fer avec la police.", "price": 300, "watch": "", "dl": "", "cat": "Thriller", "une": true, "trailer": "https://www.youtube.com/results?search_query=La+Casa+de+Papel+bande+annonce+trailer+officiel", "seasons": 5}, {"id": "b6", "pop": 80, "type": "serie", "title": "Prison Break", "poster": "posters/b6.jpg", "synopsis": "Michael Scofield, ingénieur brillant, se fait volontairement emprisonner pour faire évader son frère Lincoln, condamné à mort pour un crime qu’il n’a pas commis. Son plan est caché sur son corps.", "price": 300, "watch": "", "dl": "", "cat": "Thriller", "une": true, "trailer": "https://www.youtube.com/results?search_query=Prison+Break+bande+annonce+trailer+officiel", "seasons": 5}, {"id": "b7", "pop": 78, "nouv": true, "type": "film", "title": "Fast & Furious 9", "poster": "posters/b7.jpg", "synopsis": "Dom Toretto et sa famille sont rattrapés par leur passé quand son frère Jakob refait surface. Courses, cascades spectaculaires et loyauté entre amis.", "price": 150, "watch": "", "dl": "", "cat": "Action", "une": true, "seasons": 1}, {"id": "b8", "pop": 75, "nouv": true, "type": "film", "title": "Avatar : De feu et de cendres", "poster": "posters/b8.jpg", "synopsis": "Jake Sully et les siens affrontent de nouveaux dangers sur Pandora, où le feu menace leur foyer. Un voyage visuel spectaculaire.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "une": true, "seasons": 1}, {"id": "n5", "type": "film", "title": "Omo Ghetto : The Saga", "poster": "posters/n5.jpg", "synopsis": "Deux sœurs que tout oppose voient leurs destins se croiser dans un récit plein d’humour et d’action.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=Omo+Ghetto%3A+The+Saga+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n6", "type": "film", "title": "Citation", "poster": "posters/n6.jpg", "synopsis": "Une étudiante accuse son professeur de harcèlement et se bat pour que justice soit rendue.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=Citation+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n8", "type": "film", "title": "Anikulapo", "poster": "posters/n8.jpg", "synopsis": "Dans le royaume d’Oyo, un homme reçoit un pouvoir surnaturel qui bouleverse sa vie.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=Anikulapo+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n13", "type": "serie", "title": "Jenifa’s Diary", "poster": "posters/n13.jpg", "synopsis": "Les aventures de Jenifa, jeune femme pleine d’énergie, entre son village et Lagos.", "price": 300, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=Jenifa%27s+Diary+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n14", "nouv": true, "type": "serie", "title": "Blood & Water", "poster": "posters/n14.jpg", "synopsis": "Une lycéenne du Cap enquête sur la sœur qu’on lui a enlevée à la naissance.", "price": 300, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Blood+%26+Water+bande+annonce+trailer+officiel", "seasons": 4}, {"id": "n15", "type": "serie", "title": "Queen Sono", "poster": "posters/n15.jpg", "synopsis": "Une espionne sud-africaine mène des missions dangereuses à travers le continent.", "price": 300, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Queen+Sono+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n16", "type": "serie", "title": "Sakho & Mangane", "poster": "posters/n16.jpg", "synopsis": "Deux policiers dakarois que tout oppose enquêtent ensemble.", "price": 300, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Sakho+%26+Mangane+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "n17", "type": "serie", "title": "Shuga", "poster": "posters/n17.jpg", "synopsis": "De jeunes Africains vivent leurs amours, leurs doutes et leurs défis.", "price": 300, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Shuga+bande+annonce+trailer+officiel", "seasons": 5}, {"id": "n18", "nouv": true, "type": "serie", "title": "Squid Game", "poster": "posters/n18.jpg", "synopsis": "Des candidats endettés participent à des jeux d’enfants mortels pour un énorme prix.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Squid+Game+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "n19", "type": "serie", "title": "Crash Landing on You", "poster": "posters/n19.jpg", "synopsis": "Une héritière sud-coréenne atterrit en Corée du Nord et y rencontre un officier.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Crash+Landing+on+You+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n20", "type": "serie", "title": "Goblin", "poster": "posters/n20.jpg", "synopsis": "Un gobelin immortel cherche l’épouse qui mettra fin à sa vie éternelle.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Goblin+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n21", "type": "serie", "title": "Descendants of the Sun", "poster": "posters/n21.jpg", "synopsis": "Un capitaine et une médecin s’aiment entre missions militaires et urgences.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Descendants+of+the+Sun+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n22", "type": "serie", "title": "Itaewon Class", "poster": "posters/n22.jpg", "synopsis": "Un ancien détenu ouvre un restaurant pour se venger d’un puissant groupe.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Itaewon+Class+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n23", "type": "serie", "title": "It’s Okay to Not Be Okay", "poster": "posters/n23.jpg", "synopsis": "Un aide-soignant et une autrice de contes pour enfants se soutiennent mutuellement.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=It%27s+Okay+to+Not+Be+Okay+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n24", "nouv": true, "type": "serie", "title": "Business Proposal", "poster": "posters/n24.jpg", "synopsis": "Une employée se fait passer pour une amie à un rendez-vous arrangé avec son patron.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Business+Proposal+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n25", "type": "serie", "title": "Vincenzo", "poster": "posters/n25.jpg", "synopsis": "Un avocat de la mafia italienne retourne en Corée pour récupérer un trésor.", "price": 300, "watch": "", "dl": "", "cat": "K-drama", "trailer": "https://www.youtube.com/results?search_query=Vincenzo+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "n26", "type": "manga", "title": "Attack on Titan", "poster": "posters/n26.jpg", "synopsis": "L’humanité vit derrière d’immenses murs pour échapper aux Titans.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Attack+on+Titan+bande+annonce+trailer+officiel", "seasons": 4}, {"id": "n27", "nouv": true, "type": "manga", "title": "My Hero Academia", "poster": "posters/n27.jpg", "synopsis": "Dans un monde de super-pouvoirs, un garçon sans don rêve de devenir un héros.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=My+Hero+Academia+bande+annonce+trailer+officiel", "seasons": 7}, {"id": "n28", "nouv": true, "type": "manga", "title": "Jujutsu Kaisen", "poster": "posters/n28.jpg", "synopsis": "Un lycéen avale un objet maudit et rejoint une école d’exorcistes.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Jujutsu+Kaisen+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "n29", "type": "manga", "title": "Hunter x Hunter", "poster": "posters/n29.jpg", "synopsis": "Gon part à la recherche de son père, un célèbre chasseur.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Hunter+x+Hunter+bande+annonce+trailer+officiel", "seasons": 6}, {"id": "n30", "type": "manga", "title": "Bleach", "poster": "posters/n30.jpg", "synopsis": "Ichigo reçoit les pouvoirs d’un shinigami pour protéger les vivants.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Bleach+bande+annonce+trailer+officiel", "seasons": 2}, {"id": "n31", "nouv": true, "type": "manga", "title": "Solo Leveling", "poster": "posters/n31.jpg", "synopsis": "Le plus faible des chasseurs obtient un pouvoir unique pour progresser sans limite.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Solo+Leveling+bande+annonce+trailer+officiel", "seasons": 2}, {"id": "z1", "pop": 86, "nouv": true, "type": "film", "title": "Spider-Man : Brand New Day", "poster": "posters/z1.jpg", "synopsis": "Peter Parker reprend sa double vie de super-héros dans une nouvelle aventure, avec Tom Holland et Zendaya.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Spider-Man%3A+Brand+New+Day+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z2", "pop": 84, "nouv": true, "type": "film", "title": "The Odyssey", "poster": "posters/z2.jpg", "synopsis": "Le réalisateur Christopher Nolan adapte l’épopée d’Ulysse et son long voyage de retour vers Ithaque.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=The+Odyssey+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z3", "pop": 78, "nouv": true, "type": "film", "title": "Resident Evil", "poster": "posters/z3.jpg", "synopsis": "Nouvelle version cinéma de la célèbre saga d’horreur, réalisée par Zach Cregger.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Resident+Evil+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z4", "pop": 76, "nouv": true, "type": "film", "title": "Street Fighter", "poster": "posters/z4.jpg", "synopsis": "Les combattants du célèbre jeu vidéo s’affrontent dans un tournoi aux enjeux mondiaux.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Street+Fighter+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z5", "pop": 85, "nouv": true, "type": "serie", "title": "Les Anneaux de pouvoir", "poster": "posters/z5.jpg", "synopsis": "La lutte contre Sauron continue : Elfes, Nains et Hommes résistent à l’ombre qui grandit sur la Terre du Milieu.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Les+Anneaux+de+pouvoir+%E2%80%93+Saison+3+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "z6", "pop": 82, "nouv": true, "type": "serie", "title": "Blade Runner 2099", "poster": "posters/z6.jpg", "synopsis": "Dans un futur sombre, une nouvelle histoire se déroule dans l’univers de Blade Runner.", "price": 300, "watch": "", "dl": "", "cat": "Thriller", "trailer": "https://www.youtube.com/results?search_query=Blade+Runner+2099+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z7", "pop": 80, "nouv": true, "type": "serie", "title": "Black Doves", "poster": "posters/z7.jpg", "synopsis": "Thriller d’espionnage avec Keira Knightley : trahisons, secrets et missions à haut risque.", "price": 300, "watch": "", "dl": "", "cat": "Thriller", "trailer": "https://www.youtube.com/results?search_query=Black+Doves+%E2%80%93+Saison+2+bande+annonce+trailer+officiel", "seasons": 2}, {"id": "z8", "pop": 74, "nouv": true, "type": "serie", "title": "Percy Jackson et les Olympiens", "poster": "posters/z8.jpg", "synopsis": "Percy et ses amis demi-dieux reprennent la route pour affronter de nouveaux monstres et dieux.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Percy+Jackson+et+les+Olympiens+%E2%80%93+Saison+3+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "z9", "pop": 72, "nouv": true, "type": "serie", "title": "The Altruists", "poster": "posters/z9.jpg", "synopsis": "Drame inspiré de la chute de la plateforme d’échange de cryptomonnaies FTX.", "price": 300, "watch": "", "dl": "", "cat": "Thriller", "trailer": "https://www.youtube.com/results?search_query=The+Altruists+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z10", "pop": 73, "nouv": true, "type": "serie", "title": "L’Impératrice", "poster": "posters/z10.jpg", "synopsis": "La dernière saison de la série historique consacrée à l’impératrice Sissi.", "price": 300, "watch": "", "dl": "", "cat": "Romance", "trailer": "https://www.youtube.com/results?search_query=L%27Imp%C3%A9ratrice+%E2%80%93+Saison+3+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "z11", "pop": 83, "nouv": true, "type": "manga", "title": "Les Carnets de l’Apothicaire", "poster": "posters/z11.jpg", "synopsis": "Maomao, jeune apothicaire au palais impérial, résout des énigmes et des affaires d’empoisonnement.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Les+Carnets+de+l%27Apothicaire+%E2%80%93+Saison+3+bande+annonce+trailer+officiel", "seasons": 3}, {"id": "z12", "pop": 81, "nouv": true, "type": "manga", "title": "Black Clover", "poster": "posters/z12.jpg", "synopsis": "Asta, né sans magie, rêve de devenir l’empereur-mage grâce à son grimoire à cinq feuilles.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Black+Clover+%E2%80%93+Saison+2+bande+annonce+trailer+officiel", "seasons": 2}, {"id": "z13", "pop": 77, "nouv": true, "type": "manga", "title": "Blue Box", "poster": "posters/z13.jpg", "synopsis": "Taiki, jeune sportif de badminton, vit une romance avec Chinatsu, sa grande, dans un lycée sportif.", "price": 300, "watch": "", "dl": "", "cat": "Romance", "trailer": "https://www.youtube.com/results?search_query=Blue+Box+%E2%80%93+Saison+2+bande+annonce+trailer+officiel", "seasons": 2}, {"id": "z14", "pop": 79, "nouv": true, "type": "manga", "title": "Cyberpunk : Edgerunners 2", "poster": "posters/z14.jpg", "synopsis": "Retour à Night City : une nouvelle histoire de survie, de famille et de mégacorporations.", "price": 300, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Cyberpunk+%3A+Edgerunners+2+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "z15", "pop": 70, "nouv": true, "type": "manga", "title": "Magic Knight Rayearth", "poster": "posters/z15.jpg", "synopsis": "Trois lycéennes sont transportées dans le monde de Céphiro et deviennent des chevalières magiques.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Magic+Knight+Rayearth+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f1", "pop": 60, "type": "film", "title": "A Tribe Called Judah", "poster": "posters/f1.jpg", "synopsis": "Une mère célibataire courageuse et ses cinq fils, tous très différents, se lancent ensemble dans une opération audacieuse pour sauver leur famille.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=A+Tribe+Called+Judah+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f2", "pop": 60, "type": "film", "title": "Gangs of Lagos", "poster": "posters/f2.jpg", "synopsis": "Trois amis d’enfance grandissent sur l’île d’Isale Eko, à Lagos, et se retrouvent pris dans la violence des gangs.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=Gangs+of+Lagos+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f3", "pop": 60, "type": "film", "title": "The Black Book", "poster": "posters/f3.jpg", "synopsis": "Un diacre en deuil, accusé à tort, traque ceux qui ont tué son fils face à une brigade de police corrompue.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=The+Black+Book+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f4", "pop": 60, "type": "film", "title": "Elesin Oba : Le cavalier du roi", "poster": "posters/f4.jpg", "synopsis": "Le roi est mort. Selon la tradition, son cavalier doit le suivre dans la mort, mais il hésite au moment de partir.", "price": 150, "watch": "", "dl": "", "cat": "Nollywood", "trailer": "https://www.youtube.com/results?search_query=Elesin+Oba%3A+Le+cavalier+du+roi+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f5", "pop": 60, "type": "film", "title": "Saloum", "poster": "posters/f5.jpg", "synopsis": "Trois mercenaires en fuite se cachent dans le delta du Saloum, au Sénégal, et affrontent des forces surnaturelles.", "price": 150, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Saloum+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f6", "pop": 60, "type": "film", "title": "Banel & Adama", "poster": "posters/f6.jpg", "synopsis": "Dans un village du nord du Sénégal, Banel et Adama vivent un amour fou qui défie les traditions.", "price": 150, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Banel+%26+Adama+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f7", "pop": 60, "type": "film", "title": "Sira", "poster": "posters/f7.jpg", "synopsis": "Une jeune femme enlevée par des terroristes lutte pour survivre dans le désert et retrouver son fiancé.", "price": 150, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Sira+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f8", "pop": 60, "type": "film", "title": "Lingui, les liens sacrés", "poster": "posters/f8.jpg", "synopsis": "À N’Djamena, une mère célibataire se bat pour aider sa fille adolescente.", "price": 150, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Lingui%2C+les+liens+sacr%C3%A9s+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f9", "pop": 60, "type": "film", "title": "Mami Wata", "poster": "posters/f9.jpg", "synopsis": "Dans un village côtier, les croyances anciennes et la modernité s’affrontent autour de la déesse des eaux.", "price": 150, "watch": "", "dl": "", "cat": "Afrique", "trailer": "https://www.youtube.com/results?search_query=Mami+Wata+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f10", "pop": 60, "type": "film", "title": "Spider-Man : No Way Home", "poster": "posters/f10.jpg", "synopsis": "Après la révélation de son identité, Peter Parker demande l’aide du Dr Strange, ce qui ouvre les portes du multivers.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Spider-Man%3A+No+Way+Home+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f11", "pop": 60, "type": "film", "title": "Top Gun : Maverick", "poster": "posters/f11.jpg", "synopsis": "Maverick revient comme instructeur d’une escouade de jeunes pilotes pour une mission particulièrement dangereuse.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Top+Gun%3A+Maverick+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f12", "pop": 60, "type": "film", "title": "Black Panther : Wakanda Forever", "poster": "posters/f12.jpg", "synopsis": "Le Wakanda pleure son roi et doit protéger son peuple d’une menace venue des profondeurs.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Black+Panther%3A+Wakanda+Forever+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f13", "pop": 60, "type": "film", "title": "Mission : Impossible – Dead Reckoning", "poster": "posters/f13.jpg", "synopsis": "Ethan Hunt et son équipe traquent une arme redoutable avant qu’elle ne tombe entre de mauvaises mains.", "price": 150, "watch": "", "dl": "", "cat": "Action", "trailer": "https://www.youtube.com/results?search_query=Mission%3A+Impossible+%E2%80%93+Dead+Reckoning+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f14", "pop": 60, "type": "film", "title": "Dune", "poster": "posters/f14.jpg", "synopsis": "Paul Atréides part pour la planète désertique Arrakis, seule source de l’épice, et devient le centre d’un conflit.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Dune+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f15", "pop": 60, "type": "film", "title": "Avatar : La Voie de l’eau", "poster": "posters/f15.jpg", "synopsis": "Jake Sully et sa famille quittent la forêt de Pandora pour trouver refuge chez les peuples de l’océan.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "trailer": "https://www.youtube.com/results?search_query=Avatar%3A+La+Voie+de+l%27eau+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f16", "pop": 60, "type": "film", "title": "The Batman", "poster": "posters/f16.jpg", "synopsis": "Batman enquête sur une série de meurtres à Gotham menés par le Riddler.", "price": 150, "watch": "", "dl": "", "cat": "Thriller", "trailer": "https://www.youtube.com/results?search_query=The+Batman+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f17", "pop": 60, "type": "film", "title": "Super Mario Bros. le film", "poster": "posters/f17.jpg", "synopsis": "Mario et Luigi sont transportés dans un monde magique où ils affrontent le terrible Bowser.", "price": 150, "watch": "", "dl": "", "cat": "Animation", "trailer": "https://www.youtube.com/results?search_query=Super+Mario+Bros.+le+film+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "f18", "pop": 60, "type": "film", "title": "Encanto : La fantastique famille Madrigal", "poster": "posters/f18.jpg", "synopsis": "Mirabel, seule de sa famille sans pouvoir magique, tente de sauver la maison enchantée.", "price": 150, "watch": "", "dl": "", "cat": "Animation", "trailer": "https://www.youtube.com/results?search_query=Encanto%3A+La+fantastique+famille+Madrigal+bande+annonce+trailer+officiel", "seasons": 1}, {"id": "k1", "pop": 80, "type": "enfant", "title": "Zootopie 2", "poster": "", "synopsis": "Judy Hopps et Nick Wilde reviennent dans une nouvelle enquête palpitante au cœur de la ville des animaux.", "price": 150, "watch": "", "dl": "", "cat": "Animation", "seasons": 1, "nouv": true}, {"id": "k2", "pop": 78, "type": "enfant", "title": "Vaiana 2", "poster": "", "synopsis": "Vaiana repart en mer avec Maui pour une nouvelle aventure au cœur de l’océan.", "price": 150, "watch": "", "dl": "", "cat": "Animation", "seasons": 1}, {"id": "k3", "pop": 77, "type": "enfant", "title": "Vice-versa 2", "poster": "", "synopsis": "Joie et les autres émotions accueillent de nouvelles émotions quand Riley devient adolescente.", "price": 150, "watch": "", "dl": "", "cat": "Animation", "seasons": 1}, {"id": "k4", "pop": 74, "type": "enfant", "title": "Moi, moche et méchant 4", "poster": "", "synopsis": "Gru, Lucy et leurs filles affrontent un nouvel ennemi, avec l’aide des Minions.", "price": 150, "watch": "", "dl": "", "cat": "Comédie", "seasons": 1}, {"id": "k5", "pop": 73, "type": "enfant", "title": "Kung Fu Panda 4", "poster": "", "synopsis": "Po doit choisir son successeur comme Guerrier Dragon et affronter une redoutable sorcière.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "seasons": 1}, {"id": "k6", "pop": 75, "type": "enfant", "title": "Le Robot sauvage", "poster": "", "synopsis": "Un robot échoué sur une île sauvage apprend à vivre avec les animaux et à protéger un petit oison.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "seasons": 1}, {"id": "k7", "pop": 68, "type": "enfant", "title": "Luca", "poster": "", "synopsis": "Sur la côte italienne, un jeune monstre marin vit un été inoubliable avec son meilleur ami.", "price": 150, "watch": "", "dl": "", "cat": "Animation", "seasons": 1}, {"id": "k8", "pop": 66, "type": "enfant", "title": "Les Bad Guys", "poster": "", "synopsis": "Une bande de malfrats aux allures de monstres tente de devenir gentille, pour de vrai.", "price": 150, "watch": "", "dl": "", "cat": "Comédie", "seasons": 1}, {"id": "k9", "pop": 70, "type": "enfant", "title": "Le Chat Potté 2 : La dernière quête", "poster": "", "synopsis": "Le Chat Potté, qui a perdu huit de ses neuf vies, part à la recherche de l’étoile aux vœux.", "price": 150, "watch": "", "dl": "", "cat": "Aventure", "seasons": 1}, {"id": "k10", "pop": 72, "type": "enfant", "title": "Kirikou et la sorcière", "poster": "", "synopsis": "Le petit Kirikou, minuscule mais très malin, affronte la sorcière Karaba pour sauver son village africain.", "price": 150, "watch": "", "dl": "", "cat": "Afrique", "seasons": 1}, {"id": "k11", "pop": 76, "type": "enfant", "title": "Bluey", "poster": "", "synopsis": "Bluey et sa petite sœur Bingo inventent des jeux avec leurs parents dans cette série douce et drôle.", "price": 300, "watch": "", "dl": "", "cat": "Comédie", "seasons": 3}, {"id": "k12", "pop": 75, "type": "enfant", "title": "Miraculous : Les Aventures de Ladybug", "poster": "", "synopsis": "Marinette et Adrien deviennent Ladybug et Chat Noir pour protéger Paris de Papillon.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "seasons": 5}, {"id": "k13", "pop": 71, "type": "enfant", "title": "Pat’ Patrouille", "poster": "", "synopsis": "Six chiots courageux, menés par Ryder, sauvent les habitants de la Grande Vallée.", "price": 300, "watch": "", "dl": "", "cat": "Aventure", "seasons": 10}, {"id": "k14", "pop": 69, "type": "enfant", "title": "Tom et Jerry", "poster": "", "synopsis": "Le chat Tom et la souris Jerry, ennemis inséparables, enchaînent bagarres et farces.", "price": 300, "watch": "", "dl": "", "cat": "Comédie", "seasons": 1}];
+
+/* ================= OUTILS ================= */
+const $ = s => document.querySelector(s);
+const LBL = {film:"Films",serie:"Séries",manga:"Mangas",enfant:"Dessins animés"};
+const store = {
+  get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const BUILD = "2026-11-11a";
+if(store.get("fc_build","") !== BUILD){ try{ localStorage.removeItem("fc_items_v6"); }catch(e){} store.set("fc_build", BUILD); }
+const FRESH = () => JSON.parse(JSON.stringify(DEFAUT));
+let items = store.get("fc_admin", false) ? store.get("fc_items_v6", FRESH()) : FRESH();
+/* Anciens films de avant 2020 : retirés de l’appareil admin (une seule fois) */
+(function(){ try{
+  if(store.get("fc_admin", false) && !store.get("fc_rm1", false)){ const RM = ["n1","n2","n3","n4","n7","n9","n10","n11","n12"]; items = items.filter(x => !RM.includes(x.id)); store.set("fc_items_v6", items); }
+  store.set("fc_rm1", true);
+}catch(e){} })();
+/* Affiches et bandes-annonces : mises à jour une seule fois sur l’appareil admin */
+(function(){ try{
+  if(store.get("fc_admin", false) && !store.get("fc_pt1", false)){
+    DEFAUT.forEach(d => { const x = items.find(y => y.id===d.id); if(x && /^posters\//.test(d.poster||"")){ x.poster = d.poster; if(d.trailer) x.trailer = d.trailer; } });
+    store.set("fc_items_v6", items);
+  }
+  store.set("fc_pt1", true);
+}catch(e){} })();
+/* Prix, saisons et titres : mise à jour une seule fois sur l’appareil admin */
+(function(){ try{
+  if(store.get("fc_admin", false) && !store.get("fc_ps1", false)){
+    items.forEach(x => {
+      const d = DEFAUT.find(y => y.id===x.id);
+      if(d){ x.price = d.price; if(!x.seasons) x.seasons = d.seasons; if(String(x.title).replace(/ – Saison \d+$/,"") === d.title) x.title = d.title; }
+      else x.price = CONFIG.PRIX[x.type] || x.price;
+    });
+    store.set("fc_items_v6", items);
+  }
+  store.set("fc_ps1", true);
+}catch(e){} })();
+/* Nouveaux titres du catalogue : ajoutés une seule fois sur l’appareil admin (sans ressusciter ce qui a été supprimé) */
+(function(){ try{
+  const seen = store.get("fc_seen_ids", null), ids = DEFAUT.map(x => x.id);
+  if(store.get("fc_admin", false) && seen){ DEFAUT.forEach(d => { if(!seen.includes(d.id) && !items.some(x => x.id===d.id)) items.push(JSON.parse(JSON.stringify(d))); }); store.set("fc_items_v6", items); }
+  store.set("fc_seen_ids", ids);
+}catch(e){} })();
+let paid = store.get("fc_paid", {});
+let tab = "all", cat = "", shown = 24, cur = null, act = "watch", method = Object.keys(CONFIG.PAIEMENTS)[0];
+const save = () => { store.set("fc_items_v6", items); store.set("fc_dirty", true); updDirty(); };
+const fmt = n => n + " " + CONFIG.DEVISE;
+const esc = s => String(s||"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const toast = t => { const e=$("#toast"); e.textContent=t; e.style.display="block"; setTimeout(()=>e.style.display="none",2600); };
+const open = id => $(id).classList.add("open");
+const close = el => { el.classList.remove("open"); if(el.id==="mPlay") $("#player").innerHTML=""; if(el.id==="mTrailer") $("#tPlayer").innerHTML=""; };
+function fixLink(u, kind){
+  if(!u) return u;
+  const m = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/) || u.match(/drive\.google\.com\/open\?id=([\w-]+)/);
+  if(m) return kind==="dl" ? `https://drive.google.com/uc?export=download&id=${m[1]}` : `https://drive.google.com/file/d/${m[1]}/preview`;
+  if(/dropbox\.com/.test(u)){
+    try{ const x = new URL(u); x.searchParams.delete("dl"); x.searchParams.delete("raw"); x.searchParams.set(kind==="dl"?"dl":"raw","1"); return x.toString(); }catch(e){}
+  }
+  return u;
+}
+function parseEps(txt){
+  return txt.split("\n").map(l => l.trim()).filter(Boolean).map(l => {
+    const [t,w,d] = l.split("|").map(x => x.trim());
+    return {t:t||"Épisode", watch:fixLink(w||"","watch"), dl:fixLink(d||w||"","dl")};
+  });
+}
+function download(url, name){
+  const ext = (url.split("?")[0].match(/\.\w{2,4}$/) || [""])[0];
+  const a = document.createElement("a"); a.href = url; a.download = name + ext; a.rel = "noopener";
+  if(/^https?:/i.test(url) && !url.startsWith(location.origin)) a.target = "_blank";
+  document.body.appendChild(a); a.click(); a.remove(); toast("Téléchargement lancé…");
+}
+const nSeas = i => i.type==="film" ? 1 : Math.max(1, Math.floor(Number(i.seasons)) || 1);
+const pkey = (i,s) => nSeas(i) > 1 ? i.id + "#s" + s : i.id;
+const isPaid = (i,s) => !!(paid[i.id] || paid[pkey(i,s)]);
+const anyPaid = i => !!(paid[i.id] || Object.keys(paid).some(k => k.startsWith(i.id + "#s")));
+let curS = 1;
+function codeFor(id, phone){
+  const s = id + "|" + String(phone).replace(/\D/g,"").slice(-8) + "|" + CONFIG.SECRET;
+  let h = 7; for (const c of s) h = (h*31 + c.charCodeAt(0)) >>> 0;
+  return String(h % 900000 + 100000);
+}
+function gradient(t){
+  let h=0; for(const c of t) h=(h*37+c.charCodeAt(0))%360;
+  return `linear-gradient(160deg,hsl(${h} 70% 45%),hsl(${(h+70)%360} 65% 22%))`;
+}
+function posterStyle(it){
+  return it.poster ? `--bg:url('${esc(it.poster)}')` : `background-image:${gradient(it.title)}`;
+}
+
+/* ================= AFFICHAGE ================= */
+const SING = {film:"Film",serie:"Série",manga:"Manga",enfant:"Dessin animé"};
+let bandHTML = "";
+function renderBand(){
+  const l = items.filter(i => i.une && (tab==="all" || i.type===tab));
+  $("#band").hidden = !l.length;
+  const h = l.map(i => `<button class="bi" data-id="${i.id}"><div class="poster" style="${posterStyle(i)}">${i.poster?"":esc(i.title[0])}<span class="tag">${SING[i.type]}</span></div><span class="nm">${esc(i.title)}</span></button>`).join("");
+  if(h === bandHTML) return;
+  bandHTML = h;
+  $("#track").innerHTML = h + h + h;
+  const b = $("#band"); if(l.length) b.scrollLeft = $("#track").scrollWidth / 3;
+}
+const TT = {film:["Nouveaux films","Anciens films","🎬"],serie:["Nouvelles séries","Anciennes séries","📺"],manga:["Nouveaux mangas","Anciens mangas","📖"],enfant:["Nouveaux dessins animés","Anciens dessins animés","🧸"]};
+function tile(i){
+  return `<button class="card" data-id="${i.id}"><div class="poster" style="${posterStyle(i)}">${i.poster?"":esc(i.title[0])}<span class="tag">${anyPaid(i)?"✓":i.price+" F"}</span></div><span class="bd">${isNew(i)?'<b class="nw">NEW</b>':""}${i.une?'<i class="st">★</i>':""}</span><h3>${esc(i.title)}</h3></button>`;
+}
+function render(){ renderBand();
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.t===tab));
+  const q = $("#q").value.trim().toLowerCase();
+  const inTab = tab==="all" ? items : items.filter(i => i.type===tab);
+  const cats = [...new Set(inTab.map(i => i.cat).filter(Boolean))];
+  if(cat && !cats.includes(cat)) cat = "";
+  $("#chips").innerHTML = cats.length ? [""].concat(cats).map(c => `<button class="chip${c===cat?" on":""}" data-cat="${esc(c)}">${c||"Tous"} (${c?inTab.filter(i=>i.cat===c).length:inTab.length})</button>`).join("") : "";
+  const list = inTab.filter(i => (!cat || i.cat===cat) && i.title.toLowerCase().includes(q));
+  const filtering = !!(q || cat);
+  let h = "";
+  (tab==="all" ? ["film","serie","manga","enfant"] : [tab]).forEach(t => [true,false].forEach(nv => {
+    const l = list.filter(i => i.type===t && isNew(i)===nv);
+    if(!l.length && filtering) return;
+    h += `<div class="sech" data-sec="${t}|${nv?1:0}"><h2><em>${TT[t][2]}</em> ${TT[t][nv?0:1]}</h2><span>${l.length}</span><button type="button" class="all">Tous ›</button></div>` + (l.length ? `<div class="sq-grid" data-dir="${nv?1:-1}">${l.map(tile).join("")}</div>` : '<p class="empty2">Bientôt de nouveaux titres ici.</p>');
+  }));
+  $("#grid").innerHTML = h || '<p class="empty">Aucun titre trouvé.</p>';
+}
+function epList(i){
+  const l = i.eps.map((e,k) => ({e,k})).filter(x => (Number(x.e.s)||1) === curS);
+  if(!l.length) return '<p style="color:var(--mut);margin-top:10px">Les épisodes de cette saison seront bientôt disponibles.</p>';
+  return '<div class="list">' + l.map(x => `<div class="li"><span>${esc(x.e.t)}</span><button class="btn sm" data-act="watch" data-ep="${x.k}">Regarder</button><button class="btn alt sm" data-act="dl" data-ep="${x.k}">Télécharger</button></div>`).join("") + "</div>";
+}
+function showDetail(id, keep){
+  const i = items.find(x => x.id===id); if(!i) return; if(!keep || !cur || cur.id!==id) curS = 1; cur = i;
+  const ns = nSeas(i), seas = ns>1 ? '<div class="seas">' + Array.from({length:ns},(_,k) => `<button type="button" data-season="${k+1}" class="${k+1===curS?"on":""}">Saison ${k+1}${isPaid(i,k+1)?" ✓":""}</button>`).join("") + "</div>" : "";
+  $("#detail").innerHTML = `<div class="row"><div class="poster" data-trailer="${i.id}" style="${posterStyle(i)}">${i.poster?"":esc(i.title[0])}<button class="play" data-trailer="${i.id}" aria-label="Voir la bande-annonce">▶</button></div>
+  <div><h2>${esc(i.title)}</h2><p style="color:var(--mut);margin:4px 0 10px">${LBL[i.type]} · ${isPaid(i,curS)?'<span class="ok">Débloqué</span>':fmt(i.price) + (ns>1 ? " par saison" : (i.type!=="film" && i.price>150 ? " pour 1 saison" : ""))}</p>
+  <p>${esc(i.synopsis)||"Pas de synopsis."}</p>
+  <div class="btns" style="margin-top:12px"><button class="btn ghost" data-trailer="${i.id}">▶ Bande-annonce gratuite</button></div>
+  ${seas}
+  ${i.eps&&i.eps.length ? epList(i) : '<div class="btns"><button class="btn" data-act="watch">Regarder</button><button class="btn alt" data-act="dl">Télécharger</button></div>'}</div></div>`;
+  open("#mDetail");
+}
+function doAction(kind, ep){
+  if(!cur) return;
+  if(!isPaid(cur, curS)) return openPay(kind);
+  const has = ep !== undefined, src = has ? cur.eps[+ep] : cur, name = cur.title + (has ? " - " + src.t : "");
+  if(kind==="dl"){
+    if(!src.dl) return toast("Lien de téléchargement bientôt disponible.");
+    download(src.dl, name);
+  } else {
+    if(!src.watch) return toast("Vidéo bientôt disponible.");
+    addView(cur.id); $("#playTitle").textContent = name;
+    $("#player").innerHTML = /\.(mp4|webm|ogg)(\?|$)/i.test(src.watch)
+      ? `<video controls controlsList="nodownload" src="${esc(src.watch)}"></video>`
+      : `<iframe src="${esc(src.watch)}" allowfullscreen></iframe>`;
+    close($("#mDetail")); open("#mPlay");
+  }
+}
+
+/* ================= PAIEMENT ================= */
+function openPay(kind){
+  act = kind;
+  const ns = nSeas(cur);
+  $("#payS").hidden = ns < 2;
+  $("#pSeas").innerHTML = Array.from({length:ns},(_,k) => `<option value="${k+1}" ${k+1===curS?"selected":""}>Saison ${k+1}${isPaid(cur,k+1)?" (déjà débloquée)":""}</option>`).join("");
+  payLabels();
+  $("#pays").innerHTML = Object.keys(CONFIG.PAIEMENTS).map((m,k) =>
+    `<label><input type="radio" name="pm" value="${m}" ${k===0?"checked":""}><span>${m}</span></label>`).join("");
+  method = Object.keys(CONFIG.PAIEMENTS)[0]; showInfo();
+  ["#pCode","#pRef"].forEach(s => $(s).value = ""); $("#payMsg").textContent = "";
+  open("#mPay");
+}
+function payLabels(){
+  const ns = nSeas(cur);
+  $("#payTitle").textContent = "Payer « " + cur.title + " »" + (ns>1 ? " – Saison " + curS : "");
+  $("#paySub").textContent = "Montant à payer : " + fmt(cur.price) + (ns>1 ? " (1 saison)" : "");
+}
+function showInfo(){ $("#payInfo").textContent = CONFIG.PAIEMENTS[method]; }
+function sendWa(){
+  const n=$("#pName").value.trim(), p=$("#pPhone").value.trim(), r=$("#pRef").value.trim();
+  if(!n||!p) return $("#payMsg").textContent = "Indiquez votre nom et votre numéro.";
+  const msg = `Bonjour Fabi Cine, voici ma confirmation de paiement.\nTitre : ${cur.title} (${SING[cur.type]})${nSeas(cur)>1 ? "\nSaison : " + curS : ""}\nMontant : ${fmt(cur.price)}\nMoyen : ${method}\nRéférence : ${r||"—"}\nNom : ${n}\nTéléphone : ${p}\n(Je joins la capture du reçu.)`;
+  window.open(`https://wa.me/${CONFIG.WHATSAPP}?text=${encodeURIComponent(msg)}`, "_blank");
+  $("#payMsg").innerHTML = '<span class="ok">Reçu envoyé. Entrez le code reçu pour débloquer.</span>';
+}
+function unlock(){
+  const p=$("#pPhone").value, c=$("#pCode").value.trim();
+  if(!p) return $("#payMsg").textContent = "Indiquez le numéro utilisé pour le paiement.";
+  if(c !== codeFor(pkey(cur,curS), p)) return $("#payMsg").textContent = "Code incorrect. Vérifiez le code et le numéro.";
+  paid[pkey(cur,curS)] = true; store.set("fc_paid", paid);
+  close($("#mPay")); render(); showDetail(cur.id, true); toast("Paiement validé ! Vous pouvez regarder et télécharger.");
+}
+
+/* ================= ADMIN ================= */
+let editEps = [], adminOK = false;
+const TW = {film:"Film", serie:"Série", manga:"Manga", enfant:"Dessin animé"};
+function updDirty(){ const d = $("#dirty"); if(d) d.hidden = !store.get("fc_dirty", false); }
+function gotoTab(n){
+  document.querySelectorAll("#atabs button").forEach(b => b.classList.toggle("on", b.dataset.at===n));
+  document.querySelectorAll(".apane").forEach(p => p.hidden = p.id !== "ap-" + n);
+}
+function adminList(){
+  const q = $("#aSearch").value.trim().toLowerCase(), ty = $("#aType").value;
+  const l = items.filter(i => (!ty || i.type===ty) && i.title.toLowerCase().includes(q));
+  $("#aCount").textContent = l.length + " titre" + (l.length>1?"s":"") + " sur " + items.length;
+  $("#aList").innerHTML = l.map(i => {
+    const hasF = i.watch || i.dl || (i.eps||[]).some(e => e.watch || e.dl);
+    const meta = [TW[i.type], i.cat || "sans genre", fmt(i.price)];
+    if(nSeas(i)>1) meta.push(nSeas(i) + " saisons");
+    if(i.eps && i.eps.length) meta.push(i.eps.length + " ép.");
+    if(!hasF) meta.push("⚠ sans fichier");
+    return `<div class="ar"><div class="th" style="${posterStyle(i)}"></div><div class="ai"><b>${esc(i.title)}</b><small>${meta.join(" · ")}</small></div><div class="ab"><button class="btn ghost sm" data-star="${i.id}" aria-label="À la une">${i.une?"★":"☆"}</button><button class="btn ghost sm" data-poster="${i.id}">📷 Affiche</button><button class="btn sm" data-edit="${i.id}">Modifier</button><button class="btn ghost sm" data-dup="${i.id}">Copier</button><button class="btn ghost sm" data-del="${i.id}">Supprimer</button></div></div>`;
+  }).join("") || '<p style="color:var(--mut);padding:20px 0">Aucun titre. Cliquez sur « + Ajouter un titre ».</p>';
+  $("#cItem").innerHTML = items.slice().sort((a,b) => a.title.localeCompare(b.title)).map(i => `<option value="${i.id}">${esc(i.title)}</option>`).join("");
+  updCSeas(); updDirty();
+}
+function prev(){ const u = $("#fPoster").value.trim(); $("#pv").style.backgroundImage = u ? `url("${u.replace(/"/g,"%22")}")` : ""; }
+function renderEps(){
+  $("#epRows").innerHTML = editEps.map((e,k) => `<div class="eprow"><input data-k="${k}" data-f="t" value="${esc(e.t)}" placeholder="Titre" aria-label="Titre"><input data-k="${k}" data-f="watch" value="${esc(e.watch)}" placeholder="Lien pour regarder" aria-label="Lien pour regarder"><input data-k="${k}" data-f="dl" value="${esc(e.dl)}" placeholder="Lien pour télécharger" aria-label="Lien pour télécharger"><input data-k="${k}" data-f="s" type="number" min="1" value="${esc(String(e.s||1))}" placeholder="Saison" aria-label="Saison"><button type="button" class="btn ghost sm" data-epdel="${k}" aria-label="Supprimer">✕</button></div>`).join("") || '<p style="color:var(--mut);font-size:.9rem;margin-top:8px">Aucun épisode pour le moment.</p>';
+}
+function addEps(n){
+  const w = $("#fType").value==="manga" ? "Chapitre" : "Épisode", s = editEps.length ? (Number(editEps[editEps.length-1].s)||1) : 1;
+  for(let k=0;k<n;k++) editEps.push({t:`${w} ${editEps.filter(e => (Number(e.s)||1)===s).length+1}`, s, watch:"", dl:""});
+  renderEps();
+}
+function setType(t){
+  $("#fType").value = t;
+  document.querySelectorAll("#seg button").forEach(b => b.classList.toggle("on", b.dataset.ty===t));
+  if(!$("#fId").value) $("#fPrice").value = CONFIG.PRIX[t];
+  $("#epBox").hidden = t==="film"; $("#seasBox").hidden = t==="film";
+  renderEps();
+}
+function formReset(){
+  $("#form").reset(); $("#fId").value=""; editEps=[]; $("#formTitle").textContent="Nouveau titre"; prev(); setType("film");
+}
+function formSave(){
+  const title = $("#fTitle").value.trim(); if(!title) return toast("Écrivez le titre.");
+  const type = $("#fType").value, wr = $("#fWatch").value.trim(), dr = $("#fDl").value.trim();
+  const eps = type==="film" ? [] : editEps.filter(e => e.t.trim() || e.watch.trim() || e.dl.trim())
+    .map(e => ({t:e.t.trim()||"Épisode", s:Math.max(1,Math.floor(Number(e.s))||1), watch:fixLink(e.watch.trim(),"watch"), dl:fixLink((e.dl||e.watch).trim(),"dl")}));
+  const it = {id:$("#fId").value || "i"+Date.now(), type, title, seasons: type==="film" ? 1 : Math.max(1, Math.floor(Number($("#fSeas").value)) || 1), poster:$("#fPoster").value.trim(), synopsis:$("#fSyn").value.trim(),
+    price:Number($("#fPrice").value)||CONFIG.PRIX[type], watch:fixLink(wr,"watch"), dl:fixLink(dr||wr,"dl"), eps, cat:$("#fCat").value, une:$("#fUne").checked, pop:Number($("#fPop").value)||0, nouv:$("#fNouv").checked, trailer:$("#fTr").value.trim()};
+  const k = items.findIndex(x => x.id===it.id);
+  k>=0 ? items[k]=it : items.unshift(it);
+  save(); render(); formReset(); adminList(); gotoTab("cat"); toast("Enregistré ✓");
+}
+function edit(id){
+  const i = items.find(x => x.id===id); if(!i) return;
+  $("#fId").value=i.id; $("#fTitle").value=i.title; $("#fPoster").value=i.poster||""; $("#fSyn").value=i.synopsis||"";
+  $("#fWatch").value=i.watch||""; $("#fDl").value=i.dl||""; $("#fUne").checked=!!i.une; $("#fPop").value=i.pop||""; $("#fNouv").checked=!!i.nouv; $("#fTr").value=i.trailer||""; $("#fCat").value=i.cat||""; $("#fPrice").value=i.price; $("#fSeas").value=i.seasons||1;
+  editEps = JSON.parse(JSON.stringify(i.eps||[])); $("#formTitle").textContent = "Modifier : " + i.title;
+  setType(i.type); prev(); gotoTab("add"); $("#ap-add").scrollIntoView({behavior:"smooth"});
+}
+function dup(id){
+  const i = items.find(x => x.id===id); if(!i) return;
+  const c = JSON.parse(JSON.stringify(i)); c.id = "i"+Date.now(); c.title += " (copie)";
+  items.unshift(c); save(); render(); adminList(); toast("Titre copié.");
+}
+function star(id){ const i = items.find(x => x.id===id); if(!i) return; i.une = !i.une; save(); render(); adminList(); }
+function delItem(id){
+  const i = items.find(x => x.id===id); if(!i || !confirm("Supprimer « " + i.title + " » ?")) return;
+  items = items.filter(x => x.id!==id); save(); render(); adminList(); toast("Supprimé.");
+}
+function showPanel(){ $("#login").style.display="none"; $("#panel").style.display="block"; adminList(); formReset(); gotoTab("cat"); }
+
+/* ================= ÉVÉNEMENTS ================= */
+document.addEventListener("click", e => {
+  const t = e.target;
+  if(t.matches("[data-close]")) close(t.closest(".modal"));
+  else if(t.classList.contains("modal")) close(t);
+  const card = t.closest(".card"); if(card) showDetail(card.dataset.id);
+  const bi = t.closest(".bi");
+  if(bi){ const it = items.find(x => x.id===bi.dataset.id); if(it){ tab = it.type; cat = ""; render(); showDetail(it.id); } }
+  if(t.dataset.season && cur){ curS = +t.dataset.season; showDetail(cur.id, true); }
+  if(t.dataset.act) doAction(t.dataset.act, t.dataset.ep);
+  if(t.dataset.open){ close($("#mMine")); showDetail(t.dataset.open); }
+  if(t.id==="more"){ shown += 24; render(); }
+  if(t.classList.contains("chip")){ cat = t.dataset.cat; shown = 24; render(); }
+  if(t.dataset.edit) edit(t.dataset.edit);
+  if(t.dataset.dup) dup(t.dataset.dup);
+  if(t.dataset.star) star(t.dataset.star);
+  if(t.dataset.del) delItem(t.dataset.del);
+  if(t.dataset.epdel){ editEps.splice(+t.dataset.epdel, 1); renderEps(); }
+  if(t.dataset.ty) setType(t.dataset.ty);
+  if(t.dataset.at){ gotoTab(t.dataset.at); if(t.dataset.at==="cat") adminList(); }
+});
+$("#tabs").onclick = e => { if(e.target.dataset.t){ tab=e.target.dataset.t; cat=""; shown=24; render(); } };
+let qTimer; $("#q").oninput = () => { clearTimeout(qTimer); qTimer = setTimeout(() => { shown = 24; const on = !!$("#q").value.trim(); document.body.classList.toggle("searching", on); render(); if(on) window.scrollTo({top:0}); }, 140); };
+$("#pays").onchange = e => { method = e.target.value; showInfo(); };
+$("#sendWa").onclick = sendWa;
+$("#unlock").onclick = unlock;
+$("#admBtn").onclick = () => { open("#mAdmin"); if(adminOK) showPanel(); };
+$("#myBtn").onclick = () => {
+  const l = items.filter(anyPaid);
+  $("#mineList").innerHTML = l.length ? l.map(i => `<div class="li"><span>${esc(i.title)}</span><button class="btn sm" data-open="${i.id}">Ouvrir</button></div>`).join("") : '<p style="color:var(--mut)">Aucun achat pour le moment.</p>';
+  open("#mMine");
+};
+$("#aLogin").onclick = async () => {
+  if(!(window.crypto && crypto.subtle)) return toast("Ouvrez le site en https pour vous connecter.");
+  const b = await crypto.subtle.digest("SHA-256", new TextEncoder().encode($("#aPass").value));
+  const h = [...new Uint8Array(b)].map(x => x.toString(16).padStart(2,"0")).join("");
+  if(h !== CONFIG.ADMIN_HASH) return toast("Mot de passe incorrect.");
+  adminOK = true; store.set("fc_admin", true); showPanel();
+};
+$("#aPass").onkeydown = e => { if(e.key==="Enter") $("#aLogin").click(); };
+$("#fSave").onclick = formSave;
+$("#fCancel").onclick = () => { formReset(); gotoTab("cat"); };
+$("#addNew").onclick = () => { formReset(); gotoTab("add"); };
+$("#epAdd1").onclick = () => addEps(1);
+$("#epAdd5").onclick = () => addEps(5);
+$("#pSeas").onchange = e => { curS = +e.target.value || 1; payLabels(); };
+$("#epRows").oninput = e => { const k = e.target.dataset.k; if(k!==undefined) editEps[+k][e.target.dataset.f] = e.target.value; };
+$("#fPoster").oninput = prev;
+$("#aSearch").oninput = adminList;
+$("#aType").onchange = adminList;
+$("#fCat").innerHTML = '<option value="">Aucun</option>' + CONFIG.CATS.map(c => `<option>${c}</option>`).join("");
+$("#fFile").onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  const img = new Image();
+  img.onload = () => {
+    const k = Math.min(1, 320/img.width, 480/img.height), c = document.createElement("canvas");
+    c.width = img.width*k; c.height = img.height*k; c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    $("#fPoster").value = c.toDataURL("image/jpeg", .8); prev(); toast("Image prête.");
+    URL.revokeObjectURL(img.src);
+  };
+  img.src = URL.createObjectURL(f);
+};
+function updCSeas(){ const it = items.find(x => x.id===$("#cItem").value), n = it ? nSeas(it) : 1; $("#cSeasBox").hidden = n < 2; $("#cSeas").innerHTML = Array.from({length:n},(_,k) => `<option value="${k+1}">Saison ${k+1}</option>`).join(""); }
+$("#cItem").onchange = updCSeas;
+$("#cGen").onclick = () => {
+  const p = $("#cPhone").value.trim(), it = items.find(x => x.id===$("#cItem").value);
+  if(!it) return toast("Choisissez un titre.");
+  if(p.replace(/\D/g,"").length < 8) return toast("Saisissez le téléphone du client.");
+  const sn = +$("#cSeas").value || 1, code = codeFor(pkey(it, sn), p); $("#cOut").textContent = code; $("#cRes").hidden = false;
+  const msg = `Bonjour ! Votre paiement pour « ${it.title} »${nSeas(it)>1 ? " (saison " + sn + ")" : ""} est validé. Votre code de déblocage : ${code}. Saisissez-le avec votre numéro sur Fabi Cine pour regarder et télécharger.`;
+  $("#cWa").href = "https://wa.me/" + p.replace(/\D/g,"") + "?text=" + encodeURIComponent(msg);
+};
+$("#cCopy").onclick = async () => { try{ await navigator.clipboard.writeText($("#cOut").textContent); toast("Code copié."); }catch(e){ toast("Copiez le code à la main."); } };
+async function pubOnline(){
+  let k = store.get("fc_pubkey", "");
+  if(!k){ k = (prompt("Mot de passe de publication (celui du script Google) :") || "").trim(); if(!k) return; }
+  const b = $("#pub"), lab = b.textContent; b.disabled = true; b.textContent = "Publication…";
+  const v = Date.now(), body = JSON.stringify({key:k, v:v, items:items});
+  let ok = false;
+  try{
+    try{
+      const j = await (await fetch(CONFIG.CATALOG_URL, {method:"POST", body:body})).json();
+      ok = !!(j && j.ok);
+    }catch(e){
+      // Réponse illisible : on envoie quand même, puis on vérifie en relisant le catalogue
+      await fetch(CONFIG.CATALOG_URL, {method:"POST", mode:"no-cors", body:body});
+      await new Promise(r => setTimeout(r, 3000));
+      const j = await (await fetch(CONFIG.CATALOG_URL + "?t=" + Date.now(), {cache:"no-store"})).json();
+      ok = !!(j && j.v === v);
+    }
+    if(ok){ store.set("fc_pubkey", k); store.set("fc_dirty", false); store.set("fc_remote", items); updDirty(); toast("Publié ✓ Vos clients voient les changements à leur prochaine ouverture."); }
+    else { store.set("fc_pubkey", ""); toast("Échec : mot de passe incorrect ou script mal installé."); }
+  }catch(e){ toast("Pas de connexion. Réessayez."); }
+  b.disabled = false; b.textContent = lab;
+}
+$("#pub").onclick = async () => {
+  if(CONFIG.CATALOG_URL) return pubOnline();
+  try{
+    let src = await (await fetch(location.href)).text();
+    const a = src.indexOf("const DEFAUT = [");
+    const b = a < 0 ? -1 : src.indexOf("\n];", a);
+    if(b < 0) throw new Error("source");
+    src = src.slice(0, a) + "const DEFAUT = " + JSON.stringify(items).replace(/</g, "\\u003c") + ";" + src.slice(b + 3);
+    const u = URL.createObjectURL(new Blob([src], {type:"text/html"}));
+    const l = document.createElement("a"); l.href = u; l.download = "index.html"; l.click();
+    setTimeout(() => URL.revokeObjectURL(u), 4000);
+    store.set("fc_dirty", false); updDirty();
+    toast("Fichier prêt : republiez-le sur votre hébergeur.");
+  }catch(e){ toast("Ouvrez le site depuis son adresse en ligne, puis réessayez."); }
+};
+$("#exp").onclick = () => {
+  const a = document.createElement("a"); a.href = "data:application/json;charset=utf-8," + encodeURIComponent(JSON.stringify(items,null,2));
+  a.download = "fabi-cine-catalogue.json"; a.click();
+};
+$("#imp").onclick = () => {
+  const d = prompt("Collez ici le JSON du catalogue :"); if(!d) return;
+  try{ const a = JSON.parse(d); if(!Array.isArray(a)) throw 0; items = a; save(); adminList(); render(); toast("Catalogue importé."); }
+  catch(e){ toast("JSON invalide."); }
+};
+$("#rst").onclick = () => { if(confirm("Revenir au catalogue de départ ?")){ items = JSON.parse(JSON.stringify(DEFAUT)); save(); adminList(); render(); } };
+$("#wa").href = "https://wa.me/" + CONFIG.WHATSAPP;
+$("#priceBar").innerHTML = [["Films", fmt(CONFIG.PRIX.film)], ["Séries", fmt(CONFIG.PRIX.serie) + " / saison"], ["Mangas", fmt(CONFIG.PRIX.manga) + " / saison"], ["Dessins animés (films)", fmt(CONFIG.PRIX.film)], ["Dessins animés (séries)", fmt(CONFIG.PRIX.serie) + " / saison"]].map(x => `<span>${x[0]} <em>${x[1]}</em></span>`).join("");
+document.addEventListener("keydown", e => { if(e.key==="Escape") document.querySelectorAll(".modal.open").forEach(close); });
+render();
+/* ----- 3D, accès admin caché ----- */
+
+/* ----- Bande des moyens de paiement ----- */
+(function(){
+  const t = document.getElementById("ptrack"); if(!t) return;
+  const chip = m => { const l = (CONFIG.LOGOS||{})[m], c = (CONFIG.COULEURS||{})[m] || "#5b4fcf";
+    if(l) return `<div class="pchip lg"><img src="${l}" alt="${m}" height="54"></div>`;
+    return `<div class="pchip"><i style="background:${c}">${m.trim()[0].toUpperCase()}</i><span>${m}</span></div>`; };
+  const one = Object.keys(CONFIG.PAIEMENTS).map(chip).join("");
+  t.innerHTML = one + one;
+})();
+/* ----- Bandes-annonces ----- */
+const ytId = u => { const m = String(u||"").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/))([\w-]{11})/); return m ? m[1] : ""; };
+function openTrailer(id){
+  const i = items.find(x => x.id===id); if(!i) return;
+  cur = i;
+  const u = (i.trailer||"").trim(), y = ytId(u), vid = /\.(mp4|webm|ogg)(\?|$)/i.test(u);
+  $("#tTitle").textContent = "Bande-annonce gratuite : " + i.title;
+  let h = y ? `<iframe src="https://www.youtube-nocookie.com/embed/${y}?autoplay=1&rel=0&playsinline=1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Bande-annonce"></iframe>`
+    : vid ? `<video controls autoplay playsinline src="${esc(u)}"></video>`
+    : `<div class="info">${/^https?:/i.test(u) ? "Appuyez sur le bouton ci-dessous pour voir la bande-annonce de « " + esc(i.title) + " » sur YouTube." : "La bande-annonce de « " + esc(i.title) + " » sera bientôt ajoutée ici. En attendant, vous pouvez la chercher sur YouTube."}</div>`;
+  const link = y ? "https://www.youtube.com/watch?v=" + y : (/^https?:/i.test(u) ? u : "https://www.youtube.com/results?search_query=" + encodeURIComponent(i.title + " bande annonce officielle"));
+  h += `<div class="btns"><a class="btn alt" href="${esc(link)}" target="_blank" rel="noopener">${y||vid||u ? "Ouvrir sur YouTube" : "Chercher sur YouTube"}</a>${anyPaid(i) ? "" : '<button class="btn" data-tcta="1">Débloquer ce titre</button>'}</div>`;
+  $("#tPlayer").innerHTML = h; open("#mTrailer");
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-trailer]"); if(b){ openTrailer(b.dataset.trailer); return; }
+  if(e.target.closest("[data-tcta]")){ close($("#mTrailer")); openPay("watch"); }
+});
+/* ----- Anneau 3D des affiches ----- */
+let ringSig = "";
+function buildRing(){
+  const el = $("#ring3d"); if(!el) return;
+  let l = items.filter(i => i.poster).slice(0,8);
+  if(l.length < 5) l = l.concat(items.filter(i => !i.poster).slice(0, 8 - l.length));
+  const sig = l.map(i => i.id + (i.poster||"").length).join();
+  if(sig === ringSig) return; ringSig = sig;
+  const n = l.length; if(n < 3){ el.innerHTML = ""; return; }
+  const w = innerWidth < 700 ? 62 : 84, R = Math.round(w/2/Math.tan(Math.PI/n)) + 14;
+  el.innerHTML = `<div class="ring" style="--n:${n};--R:${R}px;--w:${w}px;--h:${Math.round(w*1.5)}px">` +
+    l.map((i,k) => `<button class="rc" data-id="${i.id}" style="--k:${k};${posterStyle(i)}" aria-label="${esc(i.title)}"><span>${i.poster?"":esc(i.title[0])}</span></button>`).join("") + "</div>";
+}
+$("#ring3d").addEventListener("click", e => {
+  const b = e.target.closest(".rc"); if(!b) return;
+  const it = items.find(x => x.id===b.dataset.id); if(it){ tab = it.type; cat = ""; render(); showDetail(it.id); }
+});
+/* ----- Fond blanc / noir ----- */
+const themeBtn = $("#themeBtn");
+function applyTheme(t){
+  document.documentElement.dataset.theme = t;
+  themeBtn.textContent = t==="light" ? "🌙 Noir" : "☀️ Blanc";
+}
+themeBtn.onclick = () => { const t = document.documentElement.dataset.theme==="light" ? "dark" : "light"; store.set("fc_theme", t); applyTheme(t); };
+applyTheme(document.documentElement.dataset.theme || "dark");
+/* ----- Affiche rapide depuis la liste admin ----- */
+function shrink(f, cb){
+  const img = new Image();
+  img.onload = () => { const k = Math.min(1, 320/img.width, 480/img.height), c = document.createElement("canvas"); c.width = img.width*k; c.height = img.height*k; c.getContext("2d").drawImage(img,0,0,c.width,c.height); cb(c.toDataURL("image/jpeg",.8)); URL.revokeObjectURL(img.src); };
+  img.src = URL.createObjectURL(f);
+}
+$("#quickFile").onchange = e => {
+  const f = e.target.files[0], id = e.target.dataset.id; e.target.value = ""; if(!f) return;
+  shrink(f, u => { const i = items.find(x => x.id===id); if(!i) return; i.poster = u; save(); render(); adminList(); toast("Affiche ajoutée ✓ (pensez à « Publier le site »)"); });
+};
+document.addEventListener("click", e => { const b = e.target.closest("[data-poster]"); if(b){ $("#quickFile").dataset.id = b.dataset.poster; $("#quickFile").click(); } });
+/* ----- Défilement automatique des rangées (sens alterné, pause au toucher/survol) ----- */
+const marqs = new Set(), mSt = new WeakMap();
+const mIO = window.IntersectionObserver ? new IntersectionObserver(es => es.forEach(e => { const st = mSt.get(e.target); if(st) st.vis = e.isIntersecting; }), {rootMargin:"60px"}) : {observe(){}};
+function setupMarq(){
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".sq-grid,.rrow").forEach((el, idx) => {
+    if(el.dataset.m) return; el.dataset.m = "1";
+    const n = el.children.length;
+    if(reduce || n < 2 || el.scrollWidth <= el.clientWidth + 4) return;
+    [...el.children].forEach(c => { const k = c.cloneNode(true); k.setAttribute("aria-hidden","true"); k.tabIndex = -1; el.appendChild(k); });
+    const period = el.children[n].offsetLeft - el.children[0].offsetLeft;
+    const dir = el.dataset.dir ? +el.dataset.dir : (idx % 2 ? -1 : 1);
+    const st = {el, period, dir, speed: dir > 0 ? 34 : 26, pos: dir > 0 ? 0 : period - 1, hold: false, resume: 0, last: 0};
+    el.scrollLeft = st.pos; st.last = el.scrollLeft;
+    const stop = () => { st.hold = true; }, go = () => { st.hold = false; st.resume = Date.now() + 1500; };
+    el.addEventListener("pointerdown", stop);
+    el.addEventListener("pointerup", go);
+    el.addEventListener("pointercancel", go);
+    el.addEventListener("pointerenter", e => { if(e.pointerType === "mouse") stop(); });
+    el.addEventListener("pointerleave", e => { if(e.pointerType === "mouse") go(); });
+    st.vis = true; if(window.IntersectionObserver) mIO.observe(el); mSt.set(el, st);
+    marqs.add(st);
+  });
+}
+let mLast = performance.now();
+(function tick(t){
+  const dt = Math.min(.05, (t - mLast) / 1000); mLast = t;
+  if(!document.hidden){
+    const act = [];
+    marqs.forEach(st => { if(!st.el.isConnected){ marqs.delete(st); return; } if(st.vis) act.push(st); });
+    const now = Date.now();
+    act.forEach(st => { st.cur = st.el.scrollLeft; });
+    act.forEach(st => {
+      if(Math.abs(st.cur - st.last) > 2) st.pos = st.cur;
+      if(!st.hold && now > st.resume) st.pos += st.dir * st.speed * dt; else st.pos = st.cur;
+      if(st.pos >= st.period) st.pos -= st.period; else if(st.pos < 0) st.pos += st.period;
+      st.el.scrollLeft = st.pos; st.last = st.pos;
+    });
+  }
+  requestAnimationFrame(tick);
+})(mLast);
+let rowsHTML = "";
+function isNew(i){ if(i.nouv) return true; const m = /^i(\d{13})$/.exec(i.id); return !!m && Date.now() - Number(m[1]) < 30*864e5; }
+function addView(id){ const v = store.get("fc_views",{}); v[id] = (v[id]||0) + 1; store.set("fc_views", v); }
+var rowLists = [];
+function rowHTML(title, list, rank, goTab){
+  if(!list.length) return "";
+  const li = rowLists.push({t:title, l:list}) - 1;
+  return `<div class="rth"><h2 class="rt">${title}</h2><button type="button" class="all" data-list="${li}">Tous ›</button></div><div class="rrow">` + list.map((i,k) =>
+    `<button class="bi" data-id="${i.id}" style="--i:${k}"><div class="poster" style="${posterStyle(i)}">${i.poster?"":esc(i.title[0])}<span class="tag">${SING[i.type]}</span>${rank?`<span class="rk">${k+1}</span>`:""}</div><span class="nm">${esc(i.title)}</span></button>`).join("") + "</div>";
+}
+function renderRows(){
+  rowLists = [];
+  const el = $("#rows");
+  if($("#q").value.trim()){ rowsHTML = ""; el.innerHTML = ""; return; }
+  const v = store.get("fc_views",{});
+  const base = tab==="all" ? items : items.filter(i => i.type===tab);
+  const nw = base.filter(isNew).slice(0,40);
+  const top = base.map(i => ({i, s:(Number(i.pop)||0) + 10*(v[i.id]||0)})).filter(x => x.s > 0).sort((a,b) => b.s - a.s).slice(0,10).map(x => x.i);
+  const NM = {film:"films", serie:"séries", manga:"mangas", enfant:"dessins animés"};
+  const h = rowHTML(tab==="all" ? "✨ Nouveautés" : "✨ " + TT[tab][0], nw, false) + rowHTML(tab==="all" ? "🔥 Les plus regardés" : "🔥 Les " + NM[tab] + " les plus regardé" + (tab==="serie" ? "es" : "s"), top, true);
+  let more = "";
+  if(tab==="all"){
+    const sc = i => (Number(i.pop)||0) + 10*(v[i.id]||0);
+    [["film","🎬 Films tendance"],["serie","📺 Séries tendance"],["manga","📖 Mangas tendance"],["enfant","🧸 Dessins animés"]].forEach(t => {
+      const l = items.filter(i => i.type===t[0]).sort((a,b) => sc(b) - sc(a)).slice(0,12);
+      more += rowHTML(t[1], l, false, t[0]);
+    });
+  }
+  if(tab==="all"){
+    const sc2 = i => (Number(i.pop)||0) + 10*(v[i.id]||0);
+    const pick = items.filter(i => !anyPaid(i)).sort((a,b) => sc2(b) - sc2(a)).slice(6,18);
+    more = rowHTML("⭐ Sélectionné pour vous", pick, false, "all") + more;
+    [["Nollywood","🎬 Derniers films Nollywood"],["K-drama","🇰🇷 Drame coréen"],["Afrique","🌍 Cinéma africain"]].forEach(g => {
+      const l = items.filter(i => i.cat===g[0]).sort((a,b) => sc2(b) - sc2(a)).slice(0,12);
+      more += rowHTML(g[1], l, false, "cat:" + g[0]);
+    });
+  }
+  const hh = h + more;
+  if(hh !== rowsHTML){ rowsHTML = hh; el.innerHTML = hh; }
+}
+const _render = render;
+render = function(){ _render(); renderRows(); buildRing(); document.querySelectorAll("#grid .card").forEach((c,k) => c.style.setProperty("--i", Math.min(k,12))); setupMarq(); };
+render();
+(function(){
+  const g = $("#grid");
+  g.addEventListener("pointermove", e => {
+    if(e.pointerType !== "mouse") return;
+    const c = e.target.closest(".card"); if(!c) return;
+    const r = c.getBoundingClientRect(), x = (e.clientX-r.left)/r.width-.5, y = (e.clientY-r.top)/r.height-.5;
+    c.style.setProperty("--ry", (x*16)+"deg"); c.style.setProperty("--rx", (-y*16)+"deg");
+    c.style.setProperty("--gx", (x+.5)*100+"%"); c.style.setProperty("--gy", (y+.5)*100+"%");
+  });
+  g.addEventListener("pointerleave", e => { if(e.target.classList && e.target.classList.contains("card")){ e.target.style.setProperty("--rx","0deg"); e.target.style.setProperty("--ry","0deg"); } }, true);
+  /* Admin invisible : 5 appuis rapides sur le logo, ou adresse se terminant par #admin */
+  let n = 0, t = 0;
+  const showAdmin = () => { $("#admBtn").hidden = false; $("#admBtn").click(); };
+  document.querySelector(".logo").addEventListener("click", () => {
+    const now = Date.now(); n = now - t < 900 ? n + 1 : 1; t = now;
+    if(n >= 5){ n = 0; showAdmin(); }
+  });
+  if(location.hash === "#admin") showAdmin();
+})();
+
+/* ===== Bande défilante : défilement auto + glisser (doigt ou souris) ===== */
+(function(){
+  const b = $("#band"), tr = $("#track");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let hold = false, drag = false, moved = false, sx = 0, sl = 0, resume = 0, pos = 0;
+  const pause = () => { hold = true; };
+  const play = () => { hold = false; resume = Date.now() + 1500; };
+  b.addEventListener("pointerdown", e => {
+    pause(); moved = false;
+    if(e.pointerType === "mouse" && e.button === 0){ drag = true; sx = e.clientX; sl = b.scrollLeft; b.classList.add("drag"); }
+  });
+  window.addEventListener("pointermove", e => {
+    if(!drag) return;
+    const dx = e.clientX - sx;
+    if(Math.abs(dx) > 5) moved = true;
+    b.scrollLeft = sl - dx;
+  });
+  window.addEventListener("pointerup", () => { if(drag){ drag = false; b.classList.remove("drag"); } play(); });
+  b.addEventListener("pointercancel", play);
+  b.addEventListener("pointerenter", e => { if(e.pointerType === "mouse") pause(); });
+  b.addEventListener("pointerleave", e => { if(e.pointerType === "mouse" && !drag) play(); });
+  b.addEventListener("click", e => { if(moved){ e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+  let third = 0, cw = 0, vis = true;
+  const measure = () => { third = tr.scrollWidth / 3; cw = b.clientWidth; };
+  if(window.ResizeObserver){ const ro = new ResizeObserver(measure); ro.observe(tr); ro.observe(b); } else addEventListener("resize", measure);
+  if(window.IntersectionObserver) new IntersectionObserver(e => { vis = e[e.length-1].isIntersecting; }).observe(b);
+  measure();
+  (function frame(){
+    if(vis && !document.hidden && third > cw){
+      const auto = !hold && !drag && !reduce && Date.now() > resume;
+      pos = auto ? pos + 0.6 : b.scrollLeft;
+      if(pos >= third * 2) pos -= third; else if(pos < third) pos += third;
+      if(auto || Math.abs(pos - b.scrollLeft) > 1) b.scrollLeft = pos;
+    }
+    requestAnimationFrame(frame);
+  })();
+})();
+/* ----- Affiches chargées seulement quand elles approchent de l'écran ----- */
+(function(){
+  const seen = new WeakSet();
+  const io = window.IntersectionObserver ? new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add("lz-in"); io.unobserve(e.target); } }), {rootMargin:"400px 300px"}) : null;
+  let q = 0;
+  function scan(){
+    q = 0;
+    document.querySelectorAll('[style*="--bg:"]:not(.lz-in)').forEach(el => { if(seen.has(el)) return; seen.add(el); io ? io.observe(el) : el.classList.add("lz-in"); });
+  }
+  const sched = () => { if(!q) q = requestAnimationFrame(scan); };
+  new MutationObserver(sched).observe(document.body, {childList:true, subtree:true});
+  scan();
+  if(io){
+    const po = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle("paused", !e.isIntersecting)), {rootMargin:"100px"});
+    [".hero",".pband"].forEach(sel => { const el = document.querySelector(sel); if(el) po.observe(el); });
+  }
+})();
+
+/* ===== Avis, notation de l'application et FAQ ===== */
+(function(){
+  const en = () => store.get("fc_lang","fr")==="en";
+  const stars = n => "★".repeat(n) + "☆".repeat(5-n);
+  const valid = a => a && +a.note>=1 && +a.note<=5;
+  const fixed = (CONFIG.AVIS||[]).filter(valid);
+  let remote = store.get("fc_avis_cache", []);
+  function show(){
+    const all = fixed.concat((remote||[]).filter(valid));
+    const list = all.filter(a => a.texte);
+    if(all.length){
+      const m = all.reduce((t,a) => t + (+a.note), 0) / all.length;
+      $("#rSum").innerHTML = `<span class="big">${m.toFixed(1).replace(".",",")}</span><span>/ 5</span><span>· ${all.length} avis</span>`;
+    } else $("#rSum").innerHTML = `<span>Notez l’application et laissez-nous un mot : cela nous aide à nous améliorer.</span>`;
+    $("#rList").innerHTML = list.length
+      ? list.map(a => `<div class="rev"><div class="rh"><b>${esc(a.nom||"Client")}</b><span class="st">${stars(Math.round(+a.note))}</span></div><p>${esc(a.texte)}</p></div>`).join("")
+      : `<p class="rempty">Les avis de nos clients apparaîtront ici. Soyez le premier à donner le vôtre !</p>`;
+  }
+  function load(){
+    if(!CONFIG.AVIS_URL) return;
+    fetch(CONFIG.AVIS_URL, {cache:"no-store"}).then(r => r.json()).then(j => {
+      if(j && Array.isArray(j.avis)){ remote = j.avis; store.set("fc_avis_cache", remote); show(); }
+    }).catch(() => {});
+  }
+  show(); load();
+  // Prix (suit CONFIG.PRIX)
+  $("#faqPrix").textContent = `Films et dessins animés (films) : ${fmt(CONFIG.PRIX.film)}. Séries, mangas et dessins animés (séries) : ${fmt(CONFIG.PRIX.serie)} par saison.`;
+  $("#faqWa").href = "https://wa.me/" + CONFIG.WHATSAPP;
+  // Ma note
+  let sel = 0;
+  const paint = n => document.querySelectorAll("#rStars button").forEach(b => b.classList.toggle("on", +b.dataset.s <= n));
+  const mine = store.get("fc_rating", null);
+  if(mine){ sel = mine.s; paint(sel); $("#rText").value = mine.t || ""; $("#rName").value = mine.n || ""; $("#rSend").textContent = "Modifier mon avis"; $("#rMsg").textContent = "Merci pour votre avis ! Vous pouvez le modifier à tout moment."; }
+  $("#rStars").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; sel = +b.dataset.s; paint(sel); $("#rMsg").textContent = ""; });
+  const cid = () => { let c = store.get("fc_cid", ""); if(!c){ c = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now() + "-" + Math.random().toString(36).slice(2); store.set("fc_cid", c); } return c; };
+  $("#rSend").addEventListener("click", () => {
+    const m = $("#rMsg");
+    if(!sel){ m.textContent = en() ? "Please choose a rating from 1 to 5 stars." : "Choisissez d’abord une note de 1 à 5 étoiles."; return; }
+    const t = $("#rText").value.trim(), n = $("#rName").value.trim();
+    store.set("fc_rating", {s: sel, t, n, d: Date.now()});
+    $("#rSend").textContent = en() ? "Edit my review" : "Modifier mon avis";
+    if(CONFIG.AVIS_URL){
+      // Envoi automatique : l'avis est publié pour tout le monde
+      if(navigator.onLine === false){ m.textContent = en() ? "No connection. Please try again later." : "Pas de connexion. Réessayez plus tard."; return; }
+      m.textContent = en() ? "Sending…" : "Envoi…";
+      fetch(CONFIG.AVIS_URL, {method:"POST", mode:"no-cors", body: JSON.stringify({id: cid(), nom: n, note: sel, texte: t})})
+        .then(() => { m.textContent = en() ? "Thank you for your review!" : "Merci pour votre avis !"; setTimeout(load, 1500); })
+        .catch(() => { m.textContent = en() ? "Could not send. Please try again." : "Envoi impossible. Réessayez."; });
+      return;
+    }
+    // Sans script Google : l'avis vous est envoyé par WhatsApp
+    m.textContent = en() ? "Thank you for your review!" : "Merci pour votre avis !";
+    const msg = `Bonjour Fabi Ciné, voici mon avis sur l’application : ${stars(sel)} (${sel}/5)` + (t ? `\n« ${t} »` : "") + (n ? `\n— ${n}` : "");
+    window.open("https://wa.me/" + CONFIG.WHATSAPP + "?text=" + encodeURIComponent(msg), "_blank");
+  });
+})();
+
+/* ===== Installation de l'application (PWA) ===== */
+(function(){
+  const btn = $("#installBtn"); let evt = null;
+  const standalone = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  addEventListener("beforeinstallprompt", e => { e.preventDefault(); evt = e; if(!standalone) btn.hidden = false; });
+  addEventListener("appinstalled", () => { btn.hidden = true; toast("Application installée ✓"); });
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent) && !standalone) btn.hidden = false;
+  btn.onclick = async () => {
+    if(evt){ evt.prompt(); await evt.userChoice; evt = null; btn.hidden = true; }
+    else alert("Sur iPhone : touchez le bouton Partager de Safari, puis « Sur l’écran d’accueil ».");
+  };
+  if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+    const hadSW = !!navigator.serviceWorker.controller;
+    let reloaded = false;
+    const reloadWhenIdle = () => { if(document.querySelector(".modal.open")) return setTimeout(reloadWhenIdle, 3000); location.reload(); };
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if(!hadSW || reloaded) return; reloaded = true; reloadWhenIdle(); });
+    navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).then(reg => {
+      const check = () => reg.update().catch(() => {});
+      document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") check(); });
+      setInterval(check, 30 * 60 * 1000);
+    }).catch(() => {});
+  }
+})();
+
+/* ----- Menu du bas, Classement, liens "Tous" ----- */
+let rkType = "all";
+function rankList(){
+  const v = store.get("fc_views",{}), sc = i => (Number(i.pop)||0) + 10*(v[i.id]||0);
+  const l = items.filter(i => rkType==="all" || i.type===rkType).sort((a,b) => sc(b) - sc(a)).slice(0,30);
+  const T = [["all","Tout"],["film","Films"],["serie","Séries"],["manga","Mangas"],["enfant","Enfants"]];
+  $("#rkChips").innerHTML = T.map(t => `<button type="button" class="chip ${t[0]===rkType?"on":""}" data-rkt="${t[0]}">${t[1]}</button>`).join("");
+  $("#rkList").innerHTML = l.map((i,k) => `<div class="li"><b style="width:28px;color:var(--pink)">${k+1}</b><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(i.title)} <small style="color:var(--mut)">· ${SING[i.type]}</small></span><button class="btn sm" data-rko="${i.id}">Ouvrir</button></div>`).join("");
+}
+document.addEventListener("click", e => {
+  const t = e.target;
+  const b = t.closest("#bnav button");
+  if(b){
+    const k = b.dataset.bn, mark = x => document.querySelectorAll("#bnav button").forEach(y => y.classList.toggle("on", y.dataset.bn===x));
+    if(k==="home"){ tab="all"; cat=""; shown=24; $("#q").value=""; document.body.classList.remove("searching"); render(); window.scrollTo({top:0,behavior:"smooth"}); mark("home"); }
+    else if(k==="search"){ window.scrollTo({top:0,behavior:"smooth"}); $("#q").focus(); mark("search"); }
+    else if(k==="rank"){ rkType = "all"; rankList(); open("#mRank"); }
+    else if(k==="mine"){ $("#myBtn").click(); }
+    else if(k==="set"){ syncSettings(); open("#mSet"); }
+    return;
+  }
+  const g = t.closest("[data-goall]"); if(g){ const gr = document.getElementById("grid"); if(gr) gr.scrollIntoView({behavior:"smooth"}); return; }
+  const gc = t.closest("[data-gocat]"); if(gc){ tab = "all"; cat = gc.dataset.gocat; shown = 24; render(); const gr2 = document.getElementById("grid"); if(gr2) gr2.scrollIntoView({behavior:"smooth"}); return; }
+  const gt = t.closest("[data-gotab]"); if(gt){ tab = gt.dataset.gotab; cat = ""; shown = 24; render(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  const rt = t.closest("[data-rkt]"); if(rt){ rkType = rt.dataset.rkt; rankList(); return; }
+  const ro = t.closest("[data-rko]"); if(ro){ close($("#mRank")); showDetail(ro.dataset.rko); }
+});
+
+/* ----- Menu du bas : le bouton actif suit la page ----- */
+(function(){
+  const sync = () => { const k = document.body.classList.contains("searching") ? "search" : "home"; document.querySelectorAll("#bnav button").forEach(y => y.classList.toggle("on", y.dataset.bn===k)); };
+  const r0 = render; render = function(){ r0.apply(this, arguments); sync(); };
+  sync();
+})();
+
+/* ----- Partager l'application (Paramètres) ----- */
+const fcShareUrl = () => CONFIG.SHARE_URL || location.href.split("#")[0].split("?")[0];
+const fcShareText = () => store.get("fc_lang","fr")==="en" ? "Watch movies, series, manga and cartoons on your phone with Fabi Ciné 🎬" : "Regarde films, séries, mangas et dessins animés sur ton téléphone avec Fabi Ciné 🎬";
+function fcCopy(){
+  const u = fcShareUrl(), ok = () => toast(store.get("fc_lang","fr")==="en" ? "Link copied." : "Lien copié.");
+  const old = () => { const i = $("#shareUrl"); try{ i.focus(); i.select(); i.setSelectionRange(0, 999); if(document.execCommand("copy")) return ok(); }catch(_){} toast(store.get("fc_lang","fr")==="en" ? "Press and hold the link to copy it." : "Appuyez longuement sur le lien pour le copier."); };
+  if(navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(u).then(ok).catch(old); else old();
+}
+$("#shareUrl").value = fcShareUrl();
+if(!navigator.share) $("#shNative").style.display = "none";
+
+/* ----- Bouton « Télécharger l'application » (Paramètres) ----- */
+let fcPrompt = null;
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); fcPrompt = e; });
+addEventListener("appinstalled", () => { fcPrompt = null; const b = $("#setInstall"); if(b) b.hidden = true; });
+function fcHow(w){
+  document.querySelectorAll("[data-how]").forEach(b => b.classList.toggle("on", b.dataset.how===w));
+  $("#howAndroid").hidden = w!=="android"; $("#howIos").hidden = w!=="ios";
+}
+async function fcInstall(){
+  const ua = navigator.userAgent, android = /android/i.test(ua), ios = /iphone|ipad|ipod/i.test(ua), fr = store.get("fc_lang","fr")!=="en";
+  // 0) Déjà installée
+  if(window.matchMedia && matchMedia("(display-mode: standalone)").matches || navigator.standalone){ toast(fr ? "L’application est déjà installée." : "The app is already installed."); return; }
+  // 1) Android + fichier APK fourni : téléchargement direct au clic
+  if(android && CONFIG.APK_URL){
+    const a = document.createElement("a"); a.href = CONFIG.APK_URL; a.download = "Fabi-Cine.apk"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
+    toast(fr ? "Téléchargement en cours… Ouvrez le fichier pour installer." : "Downloading… open the file to install.");
+    return;
+  }
+  // 2) Android/Chrome : fenêtre d'installation native, un seul appui
+  if(fcPrompt){ try{ fcPrompt.prompt(); await fcPrompt.userChoice; }catch(_){} fcPrompt = null; return; }
+  // 3) Sinon : explications selon le téléphone (+ lien APK si configuré)
+  fcHow(ios ? "ios" : "android");
+  const l = $("#apkLink");
+  if(CONFIG.APK_URL){ l.href = CONFIG.APK_URL; l.hidden = false; l.style.display = "inline-block"; }
+  open("#mInstall");
+}
+/* ----- Paramètres : langue, apparence, taille du texte ----- */
+function syncSettings(){
+  const th = store.get("fc_theme","dark"), lg = store.get("fc_lang","fr"), fs = store.get("fc_fs","normal");
+  document.querySelectorAll("#setLang button").forEach(b => b.classList.toggle("on", b.dataset.lang===lg));
+  document.querySelectorAll("#setTheme button").forEach(b => b.classList.toggle("on", b.dataset.th===th));
+  document.querySelectorAll("#setFs button").forEach(b => b.classList.toggle("on", b.dataset.fs===fs));
+  const ib = $("#setInstall"); if(ib) ib.hidden = !!window.matchMedia && matchMedia("(display-mode: standalone)").matches;
+}
+function setTheme(v){
+  store.set("fc_theme", v);
+  const real = v==="auto" ? ((window.matchMedia && matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark") : v;
+  document.documentElement.dataset.theme = real;
+  const tb = $("#themeBtn"); if(tb) tb.textContent = real==="light" ? "🌙 Noir" : "☀️ Blanc";
+}
+function setFs(v){ store.set("fc_fs", v); document.documentElement.classList.toggle("fs-big", v==="big"); }
+if(window.matchMedia) matchMedia("(prefers-color-scheme: light)").addEventListener && matchMedia("(prefers-color-scheme: light)").addEventListener("change", () => { if(store.get("fc_theme","dark")==="auto") setTheme("auto"); });
+setFs(store.get("fc_fs","normal"));
+document.addEventListener("click", e => {
+  const t = e.target;
+  const l = t.closest("#setLang button"); if(l){ setLang(l.dataset.lang); syncSettings(); return; }
+  const th = t.closest("#setTheme button"); if(th){ setTheme(th.dataset.th); syncSettings(); return; }
+  const f = t.closest("#setFs button"); if(f){ setFs(f.dataset.fs); syncSettings(); return; }
+  if(t.closest("#setMine")){ close($("#mSet")); $("#myBtn").click(); return; }
+  if(t.closest("#setWa")){ window.open("https://wa.me/" + CONFIG.WHATSAPP, "_blank"); return; }
+  if(t.closest("#setInstall")){ fcInstall(); return; }
+  const hw = t.closest("[data-how]"); if(hw){ fcHow(hw.dataset.how); return; }
+  if(t.closest("#shNative")){ if(navigator.share) navigator.share({title:"Fabi Ciné", text:fcShareText(), url:fcShareUrl()}).catch(()=>{}); else fcCopy(); return; }
+  if(t.closest("#shWa")){ window.open("https://wa.me/?text=" + encodeURIComponent(fcShareText() + "\n" + fcShareUrl()), "_blank"); return; }
+  if(t.closest("#shCopy")){ fcCopy(); return; }
+  if(t.closest("#setClear")){ (async () => { try{ if(window.caches){ for(const k of await caches.keys()) await caches.delete(k); } const rs = navigator.serviceWorker && await navigator.serviceWorker.getRegistrations(); if(rs) for(const r of rs) await r.unregister(); }catch(_){} location.reload(); })(); return; }
+});
+
+/* ----- Langues (français / English) ----- */
+const I18N_EN = {"🔗 Partager l’application": "🔗 Share the app", "Envoyez ce lien à vos amis et à votre famille.": "Send this link to your friends and family.", "Partager": "Share", "Copier le lien": "Copy link","⭐ Votre avis compte": "⭐ Your opinion matters", "Notez l’application et laissez-nous un mot : cela nous aide à nous améliorer.": "Rate the app and leave us a note: it helps us improve.", "Dites-nous ce que vous pensez (facultatif)": "Tell us what you think (optional)", "Votre prénom (facultatif)": "Your first name (optional)", "Envoyer mon avis": "Send my review", "Modifier mon avis": "Edit my review", "Merci pour votre avis ! Vous pouvez le modifier à tout moment.": "Thank you for your review! You can edit it at any time.", "Les avis de nos clients apparaîtront ici. Soyez le premier à donner le vôtre !": "Our customers’ reviews will appear here. Be the first to leave yours!", "❓ Questions fréquentes": "❓ Frequently asked questions", "Une autre question ? Écrivez-nous sur WhatsApp": "Another question? Message us on WhatsApp", "Comment ça marche ?": "How does it work?", "Choisissez un titre, payez par mobile money, envoyez-nous votre reçu sur WhatsApp, puis débloquez-le avec le code à 6 chiffres que nous vous envoyons.": "Pick a title, pay by mobile money, send us your receipt on WhatsApp, then unlock it with the 6-digit code we send you.", "Quels moyens de paiement acceptez-vous ?": "Which payment methods do you accept?", "NITA, AMANA TA, WAVE, Zcash, Airtel Money et Flooz.": "NITA, AMANA TA, WAVE, Zcash, Airtel Money and Flooz.", "Quels sont les prix ?": "What are the prices?", "Combien de temps pour recevoir mon code ?": "How long until I get my code?", "Dès que nous avons vérifié votre reçu sur WhatsApp, nous vous envoyons votre code. Plus votre message est complet (nom, numéro, référence), plus c’est rapide.": "As soon as we have checked your receipt on WhatsApp, we send you your code. The more complete your message is (name, number, reference), the faster it goes.", "Puis-je regarder et télécharger mes titres ?": "Can I watch and download my titles?", "Oui. Une fois le titre débloqué, vous pouvez le regarder ou le télécharger depuis sa fiche, et le retrouver à tout moment dans « Mes achats ».": "Yes. Once a title is unlocked, you can watch or download it from its page and find it any time in “My purchases”.", "Comment installer l’application sur mon téléphone ?": "How do I install the app on my phone?", "Ouvrez les Paramètres puis touchez « Télécharger l’application ». Sur iPhone, utilisez le bouton Partager de Safari puis « Sur l’écran d’accueil ».": "Open Settings then tap “Download the app”. On iPhone, use Safari’s Share button then “Add to Home Screen”.", "Mon code ne marche pas, que faire ?": "My code doesn’t work, what should I do?", "Le code est lié au titre et au numéro de téléphone indiqués lors du paiement. Vérifiez ce numéro, puis écrivez-nous sur WhatsApp si le problème continue.": "The code is tied to the title and the phone number given at payment. Check that number, then message us on WhatsApp if the problem continues.", "J’ai changé de téléphone, vais-je perdre mes achats ?": "I changed phones, will I lose my purchases?", "Vos achats sont enregistrés sur l’appareil. Si vous changez de téléphone, écrivez-nous sur WhatsApp avec votre preuve de paiement : nous pourrons vous aider à les retrouver.": "Your purchases are saved on your device. If you change phones, message us on WhatsApp with your proof of payment: we can help you get them back.","Télécharger l’application":"Download the app","Installer Fabi Ciné sur votre téléphone":"Install Fabi Ciné on your phone","Installer Fabi Ciné":"Install Fabi Ciné","Nouveaux films":"New movies","Nouvelles séries":"New series","Nouveaux mangas":"New manga","Nouveaux dessins animés":"New cartoons","Bientôt de nouveaux titres ici.":"New titles coming soon.","Tout": "All", "Films": "Movies", "Séries": "Series", "Mangas": "Manga", "Enfants": "Kids", "Recherche": "Search", "Classement": "Ranking", "Mes achats": "My purchases", "Paramètres": "Settings", "Accueil": "Home", "Rechercher un titre…": "Search a title…", "Rechercher": "Search", "✨ Nouveautés": "✨ New releases", "⭐ Sélectionné pour vous": "⭐ Picked for you", "🎬 Films tendance": "🎬 Trending movies", "📺 Séries tendance": "📺 Trending series", "📖 Mangas tendance": "📖 Trending manga", "🧸 Dessins animés": "🧸 Cartoons", "🎬 Derniers films Nollywood": "🎬 Latest Nollywood movies", "🇰🇷 Drame coréen": "🇰🇷 Korean dramas", "🌍 Cinéma africain": "🌍 African cinema", "🔥 Les plus regardés": "🔥 Most watched", "✨ Nouveaux films": "✨ New movies", "Anciens films": "Older movies", "✨ Nouvelles séries": "✨ New series", "Anciennes séries": "Older series", "✨ Nouveaux mangas": "✨ New manga", "Anciens mangas": "Older manga", "✨ Nouveaux dessins animés": "✨ New cartoons", "Anciens dessins animés": "Older cartoons", "Tous ›": "All ›", "Tous": "All", "Paiement accepté": "Accepted payments", "Votre cinéma, sur votre téléphone.": "Your cinema, on your phone.", "Regardez et téléchargez vos films, séries, mangas et dessins animés préférés. Paiement simple par NITA, AMANA TA, WAVE, Zcash, Airtel Money ou Flooz.": "Watch and download your favourite movies, series, manga and cartoons. Easy payment with NITA, AMANA TA, WAVE, Zcash, Airtel Money or Flooz.", "Dessins animés (films)": "Cartoons (movies)", "Dessins animés (séries)": "Cartoons (series)", "Dessins animés": "Cartoons", "Film": "Movie", "Série": "Series", "Manga": "Manga", "Dessin animé": "Cartoon", "· Film": "· Movie", "· Série": "· Series", "· Manga": "· Manga", "· Dessin animé": "· Cartoon", "Regarder": "Watch", "Télécharger": "Download", "▶ Bande-annonce gratuite": "▶ Free trailer", "Débloqué": "Unlocked", "Débloquer ce titre": "Unlock this title", "Débloquer": "Unlock", "Ouvrir sur YouTube": "Open on YouTube", "Ouvrir": "Open", "Aucun titre trouvé.": "No title found.", "Aucun achat pour le moment.": "No purchases yet.", "Retrouvez ici vos titres débloqués pour les regarder ou les télécharger à nouveau.": "Find your unlocked titles here to watch or download them again.", "Paiement": "Payment", "Saison à débloquer (une saison = un paiement)": "Season to unlock (one season = one payment)", "Moyen de paiement": "Payment method", "Votre nom": "Your name", "Votre numéro de téléphone": "Your phone number", "Référence de la transaction": "Transaction reference", "Envoyer mon reçu sur WhatsApp": "Send my receipt on WhatsApp", "Après vérification, nous vous envoyons un code à 6 chiffres.": "After checking, we send you a 6-digit code.", "Code de déblocage": "Unlock code", "© Fabi Cine – Questions ?": "© Fabi Cine – Questions?", "Écrivez-nous sur WhatsApp": "Message us on WhatsApp", "⚙️ Paramètres": "⚙️ Settings", "Langue": "Language", "Apparence": "Appearance", "🌙 Noir": "🌙 Dark", "☀️ Blanc": "☀️ Light", "📱 Auto": "📱 Auto", "Taille du texte": "Text size", "Normal": "Normal", "Grand": "Large", "Nous contacter": "Contact us", "Installer l’application": "Install the app", "Partager l’application": "Share the app", "Vider le cache et recharger": "Clear cache and reload", "🏆 Classement": "🏆 Ranking", "📲 Installer": "📲 Install", "Fermer": "Close", "Voir la bande-annonce": "Watch the trailer", "Moyens de paiement": "Payment methods", "Nouveautés et populaires": "New and popular", "À la une": "Featured", "Changer la couleur du fond": "Change background colour", "Aventure": "Adventure", "Afrique": "Africa", "Comédie": "Comedy", "Choisissez un titre.": "Choose a title.", "Code copié.": "Code copied.", "Lien de téléchargement bientôt disponible.": "Download link coming soon.", "Paiement validé ! Vous pouvez regarder et télécharger.": "Payment confirmed! You can now watch and download.", "Titre copié.": "Title copied.", "Téléchargement lancé…": "Download started…", "Vidéo bientôt disponible.": "Video coming soon.", "Mot de passe incorrect.": "Wrong password.", "Application installée ✓": "App installed ✓", "Lien copié.": "Link copied.", "Les épisodes de cette saison seront bientôt disponibles.": "Episodes for this season are coming soon.", "La bande-annonce de « ": "The trailer of “"};
+const I18N_PAT = [
+  [/^· (\d+) avis$/, m => "· " + m[1] + " reviews"],
+  [/^Films et dessins animés \(films\) : (.+)\. Séries, mangas et dessins animés \(séries\) : (.+) par saison\.$/, m => "Movies and cartoons (movies): " + m[1] + ". Series, manga and cartoons (series): " + m[2] + " per season."],
+  [/^Saison (\d+)(.*)$/, m => "Season " + m[1] + m[2].replace("(déjà débloquée)","(already unlocked)")],
+  [/^(.+) \((\d+)\)$/, m => I18N_EN[m[1]] ? I18N_EN[m[1]] + " (" + m[2] + ")" : null],
+  [/^Payer « (.+) »(?: – Saison (\d+))?$/, m => "Pay “" + m[1] + "”" + (m[2] ? " – Season " + m[2] : "")],
+  [/^Montant à payer : (.+?)( \(1 saison\))?$/, m => "Amount to pay: " + m[1] + (m[2] ? " (1 season)" : "")],
+  [/^Appuyez sur le bouton ci-dessous pour voir la bande-annonce de « (.+) » sur YouTube\.$/, m => "Tap the button below to watch the trailer of “" + m[1] + "” on YouTube."],
+  [/^Bande-annonce gratuite : (.+)$/, m => "Free trailer: " + m[1]],
+  [/^(.+) · (\d+ FCFA)( par saison| pour 1 saison)?$/, m => (I18N_EN[m[1]] || m[1]) + " · " + m[2] + (m[3] ? (m[3].indexOf("par")>-1 ? " per season" : " for 1 season") : "")],
+  [/^(.+) · Débloqué$/, m => (I18N_EN[m[1]] || m[1]) + " · Unlocked"],
+  [/^(\d+ FCFA)( \/ saison| par saison| pour 1 saison)$/, m => m[1] + (m[2].indexOf("/")>-1 ? " / season" : (m[2].indexOf("par")>-1 ? " per season" : " for 1 season"))],
+  [/^Paiement par (.+)\. Écrivez-nous sur WhatsApp au (.+) pour recevoir le numéro de réception\.$/, m => "Payment by " + m[1] + ". Message us on WhatsApp at " + m[2] + " to get the receiving number."],
+  [/^🔥 Les (.+) les plus regardés?e?s?$/, m => { const w = {"films":"movies","séries":"series","mangas":"manga","dessins animés":"cartoons"}[m[1]]; return w ? "🔥 Most watched " + w : null; }]
+];
+(function(){
+  let done = new WeakMap(); const orig = new WeakMap(), ATT = ["placeholder","aria-label","title"]; const KEY = {"placeholder":"oPh","aria-label":"oAl","title":"oTt"};
+  let lang = store.get("fc_lang","fr"), obs = null;
+  const trStr = s => { if(lang!=="en") return s; const k = s.trim(); if(!k) return s; let r = I18N_EN[k];
+    if(r===undefined){ for(const p of I18N_PAT){ const m = k.match(p[0]); if(m){ const x = p[1](m); if(x){ r = x; break; } } } }
+    return r===undefined ? s : s.replace(k, r); };
+  function doText(n){ const cur = n.nodeValue; if(done.get(n)===cur) return; orig.set(n, cur); const t = trStr(cur); done.set(n, t); if(t!==cur) n.nodeValue = t; }
+  function doEl(e){ for(const a of ATT){ const v = e.getAttribute && e.getAttribute(a); if(v==null) continue; const k = KEY[a]; if(e.dataset && e.dataset[k]===undefined) e.dataset[k] = v; const o = e.dataset ? e.dataset[k] : v; const t = trStr(o); if(t!==v) e.setAttribute(a, t); } }
+  function walk(root){
+    if(root.nodeType===3){ doText(root); return; }
+    if(root.nodeType!==1 || ["SCRIPT","STYLE","TEXTAREA"].includes(root.tagName)) return;
+    doEl(root);
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT);
+    let n; while((n = w.nextNode())){ if(n.nodeType===3){ if(!["SCRIPT","STYLE","TEXTAREA"].includes(n.parentElement && n.parentElement.tagName)) doText(n); } else doEl(n); }
+  }
+  function start(){ if(obs) return; obs = new MutationObserver(ms => { obs.disconnect(); try{ ms.forEach(m => { if(m.type==="characterData") doText(m.target); else if(m.type==="attributes") doEl(m.target); else m.addedNodes.forEach(walk); }); }catch(e){} obs.takeRecords(); obs.observe(document.body, {childList:true, subtree:true, characterData:true}); });
+    obs.observe(document.body, {childList:true, subtree:true, characterData:true}); }
+  function restore(){ const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT); let n; while((n = w.nextNode())){ const o = orig.get(n); if(o!==undefined && n.nodeValue===done.get(n)){ n.nodeValue = o; done.set(n, o); } }
+    document.querySelectorAll("*").forEach(e => { if(!e.dataset) return; for(const a of ATT){ const o = e.dataset[KEY[a]]; if(o!==undefined) e.setAttribute(a, o); } }); }
+  window.setLang = function(v){ lang = v==="en" ? "en" : "fr"; store.set("fc_lang", lang); document.documentElement.lang = lang;
+    if(obs) obs.disconnect(); restore(); done = new WeakMap(); if(lang==="en") walk(document.body); if(obs){ obs.takeRecords(); obs.observe(document.body, {childList:true, subtree:true, characterData:true}); } else start(); };
+  start(); if(lang==="en") walk(document.body);
+})();
+
+/* ----- Liste complète d’une section ----- */
+function openList(title, list){
+  $("#lTitle").textContent = title; $("#lCount").textContent = list.length;
+  $("#lGrid").innerHTML = list.length ? list.map(tile).join("") : '<p class="empty2">Bientôt de nouveaux titres ici.</p>';
+  open("#mList"); const b = $("#mList .lbox"); if(b) b.scrollTop = 0;
+}
+document.addEventListener("click", e => {
+  const t = e.target;
+  const gl = t.closest("[data-list]"); if(gl){ const o = rowLists[+gl.dataset.list]; if(o) openList(o.t, o.l); return; }
+  const sc = t.closest("[data-sec]"); if(sc){
+    const p = sc.dataset.sec.split("|"), ty = p[0], nv = p[1]==="1", q = $("#q").value.trim().toLowerCase();
+    const l = items.filter(i => i.type===ty && isNew(i)===nv && (!cat || i.cat===cat) && i.title.toLowerCase().includes(q));
+    openList(TT[ty][nv?0:1], l);
+  }
+});
+
+/* ===== Catalogue en ligne : mise à jour sans republier le site ===== */
+(function(){
+  if(!CONFIG.CATALOG_URL) return;
+  const adm = () => store.get("fc_admin", false), pending = () => adm() && store.get("fc_dirty", false);
+  const p = document.querySelector("#ap-tools p");
+  if(p) p.textContent = "Après vos changements, cliquez sur « Publier le site » (en haut) : le catalogue est mis en ligne et vos clients le voient à leur prochaine ouverture de l’application. Rien à republier.";
+  const c = store.get("fc_remote", null);
+  if(Array.isArray(c) && c.length && !pending()){ items = c; render(); }
+  fetch(CONFIG.CATALOG_URL + "?t=" + Date.now(), {cache:"no-store"}).then(r => r.json()).then(j => {
+    if(!j || !Array.isArray(j.items) || !j.items.length || pending()) return;
+    items = j.items; store.set("fc_remote", items);
+    if(adm()) store.set("fc_items_v6", items);
+    render(); try{ adminList(); }catch(e){}
+  }).catch(() => {});
+})();
+</script>
+<div class="bnav" id="bnav">
+  <button type="button" data-bn="home" class="on"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>Accueil</button>
+  <button type="button" data-bn="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>Recherche</button>
+  <button type="button" data-bn="rank"><svg viewBox="0 0 24 24"><path d="M6 20V10M12 20V4M18 20v-7"/></svg>Classement</button>
+  <button type="button" data-bn="mine"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v3h16v-3"/></svg>Mes achats</button>
+  <button type="button" data-bn="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>Paramètres</button>
+</div>
+</body>
+</html>
